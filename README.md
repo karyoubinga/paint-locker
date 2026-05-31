@@ -1,4 +1,4 @@
-# 塗料ストック管理アプリ
+# Paint Locker（塗料ストック管理アプリ）
 
 模型用塗料（市販品・調色の自作色）のコレクションを管理するWebアプリです。
 ビルド工程なし。`index.html` を開くだけで動きます。
@@ -63,7 +63,7 @@ README.md    このファイル
    ```bash
    git init
    git add .
-   git commit -m "初期コミット: 塗料ストック管理アプリ"
+   git commit -m "初期コミット: Paint Locker"
    ```
 2. リポジトリ直下で `claude` を起動します。
 3. まず仕様を読ませます。

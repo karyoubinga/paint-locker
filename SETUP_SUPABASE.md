@@ -59,7 +59,7 @@ create policy "update own" on paint_state
 1. 左メニュー「Authentication」→「Providers」→「Email」を開きます。
 2. Email を有効（Enable）にします。マジックリンクはこれで使えます。
 3. 「Authentication」→「URL Configuration」を開き、以下を登録します。
-   - **Site URL**：本番URL（例：GitHub Pages の `https://ユーザー名.github.io/paint-manager/`）
+   - **Site URL**：本番URL（例：GitHub Pages の `https://ユーザー名.github.io/paint-locker/`）
    - **Redirect URLs**：上記の本番URLと、開発用の `http://localhost:8000` を追加
 
 > ログインリンクを開いた後、この一覧にあるURLにだけ戻れます。
