@@ -26,7 +26,7 @@ const colorMap = Object.fromEntries(COLOR_TYPES.map(c => [c.key, c]));
 const NONE = "__NONE__"; // シリーズ「指定なし」を表すトークン
 
 /* ============ 状態 ============ */
-let state = { paints: [], pinnedMakers: [] };
+let state = { paints: [], pinnedMakers: [], schemaVersion: 2 };
 let currentView = "all";       // all | owned | mix
 let collapsed = new Set();      // 折りたたみ中のメーカーグループ
 let formKind = "product";       // フォームの種別
@@ -48,6 +48,7 @@ async function reloadFromStore() {
   const loaded = await PaintStore.load();
   state.paints = loaded.paints;
   state.pinnedMakers = loaded.pinnedMakers;
+  state.schemaVersion = loaded.schemaVersion || 2;
   $("loading").style.display = "none";
   render();
 }
@@ -97,8 +98,10 @@ function bindEvents() {
   $("recipe-add").addEventListener("click", () => { readRecipeFromDom(); recipeDraft.push({ name:"", parts:"", note:"" }); renderRecipeRows(); });
   // スキャナ
   $("scan-close").addEventListener("click", stopScan);
-  // エクスポート
+  // エクスポート・インポート
   $("export-btn").addEventListener("click", exportJson);
+  $("import-btn").addEventListener("click", () => $("import-input").click());
+  $("import-input").addEventListener("change", importFromFile);
   // 一覧（委譲）
   listEl.addEventListener("click", onListClick);
 }
@@ -470,7 +473,7 @@ function flashCard(id) {
   }, 50);
 }
 
-/* ============ エクスポート ============ */
+/* ============ エクスポート・インポート ============ */
 function exportJson() {
   const blob = new Blob([PaintStore.exportJson(state)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -479,4 +482,22 @@ function exportJson() {
   a.download = `paint-backup-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+async function importFromFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = "";
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!Array.isArray(data.paints)) { alert("形式が正しくありません（paints が見つかりません）。"); return; }
+    if (!confirm(`${data.paints.length}件の塗料データを読み込みます。\n現在のデータは上書きされます。よろしいですか？`)) return;
+    state.paints = data.paints;
+    state.pinnedMakers = Array.isArray(data.pinnedMakers) ? data.pinnedMakers : [];
+    await persist();
+    render();
+  } catch {
+    alert("ファイルの読み込みに失敗しました。正しいJSONファイルを選択してください。");
+  }
 }

@@ -38,17 +38,11 @@
     <button class="tab" data-view="mix">調色</button>
   </div>
 
-  <!-- 操作ボタン -->
-  <div class="toolbar">
-    <button class="btn btn-scan" id="open-scan">📷 バーコード読取</button>
-    <button class="btn btn-primary" id="open-add">＋ 追加</button>
-  </div>
-
   <!-- フィルタ -->
   <div class="filters">
     <div class="full">
       <label class="fl">名前で検索</label>
-      <input id="f-search" placeholder="塗料名・色名で絞り込み">
+      <input id="f-search" placeholder="塗料名で絞り込み">
     </div>
     <div>
       <label class="fl">メーカー</label>
@@ -70,8 +64,16 @@
   <div id="list" class="list"></div>
   <div id="loading" class="loading num">読み込み中…</div>
 
+  <!-- 操作ボタン -->
+  <div class="toolbar">
+    <button class="btn btn-scan" id="open-scan">📷 バーコード読取</button>
+    <button class="btn btn-primary" id="open-add">＋ 追加</button>
+  </div>
+
   <footer class="foot">
     <button class="linkbtn" id="export-btn">バックアップ書き出し(JSON)</button>
+    <input type="file" id="import-input" accept=".json,application/json" style="display:none">
+    <button class="linkbtn" id="import-btn">バックアップ読み込み(JSON)</button>
   </footer>
 </div>
 
