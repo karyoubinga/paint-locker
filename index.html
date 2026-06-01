@@ -36,6 +36,7 @@
     <button class="tab active" data-view="all">すべて</button>
     <button class="tab" data-view="owned">所持</button>
     <button class="tab" data-view="mix">調色</button>
+    <button class="tab" data-view="wanted">欲しい</button>
   </div>
 
   <!-- 操作ボタン -->
@@ -127,6 +128,10 @@
         <label class="fl">残量 <span id="rem-val" class="num">100</span>%</label>
         <input id="i-remaining" type="range" min="0" max="100" step="5" value="100">
       </div>
+    </div>
+
+    <div class="field wanted-field">
+      <label class="chk"><input type="checkbox" id="i-wanted"> 欲しいものリストに入れる</label>
     </div>
 
     <div class="field" id="barcode-field">

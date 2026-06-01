@@ -111,6 +111,14 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);}
 .info{flex:1;min-width:0;}
 .info .nm{font-weight:700;font-size:15px;}
 .badge-mix{font-size:10px;background:var(--accent2);color:#06231f;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:700;}
+.badge-want{font-size:10px;background:var(--warn);color:#2a2300;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:700;}
+.card.wanted{border-style:dashed;border-color:var(--warn);}
+.iconbtn.want:hover{color:var(--warn);border-color:var(--warn);}
+.iconbtn.buy{color:var(--ok);border-color:var(--ok);}
+.iconbtn.buy:hover{background:var(--ok);color:#05230a;}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer;}
+.chk input{width:auto;}
+.wanted-field{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
 .info .meta{font-size:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;align-items:center;}
 .tag{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:11px;}
 .tag.code{font-family:"Space Mono",monospace;color:var(--accent2);border-color:var(--accent2);}

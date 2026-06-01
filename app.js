@@ -142,7 +142,8 @@ function refreshMakerOptions() {
   const allSeries = [...new Set(state.paints.map(p => p.series).filter(Boolean))];
   // よく使うシリーズ名を候補に常駐させる（手登録を楽にする）
   const presetSeries = [
-    "True Metallic Metal", "Model Air", "Mecha Color", "Game Color", "Game Air", "Model Color", "Metal Color",
+    "True Metallic Metal", "Model Air", "Model Color", "Mecha Color", "Game Color", "Game Air",
+    "Metal Color", "Panzer Aces", "Xpress Color", "Premium Color", "Liquid Gold",
     "Metallic", "Primary", "Auto",
   ];
   presetSeries.forEach(s => { if (!allSeries.includes(s)) allSeries.push(s); });
@@ -195,6 +196,7 @@ function getFiltered() {
   return state.paints.filter(p => {
     if (currentView === "owned" && !((Number(p.qty) || 0) >= 1)) return false;
     if (currentView === "mix" && p.kind !== "mix") return false;
+    if (currentView === "wanted" && !p.wanted) return false;
     if (q) {
       const hay = ((p.name || "") + " " + (p.code || "")).toLowerCase();
       if (!hay.includes(q)) return false;
@@ -288,10 +290,10 @@ function cardHtml(p) {
         p.recipe.map(r => `<li>${escapeHtml(r.name)}${r.parts ? `：${escapeHtml(r.parts)}` : ""}${r.note ? `（${escapeHtml(r.note)}）` : ""}</li>`).join("")
       }</ul>${p.recipeNote ? `<div class="rnote">${escapeHtml(p.recipeNote)}</div>` : ""}</div>`
     : "";
-  return `<div class="card" data-id="${p.id}">
+  return `<div class="card ${p.wanted ? "wanted" : ""}" data-id="${p.id}">
     <div class="swatch${cls}" style="background-color:${c.color}">${p.kind === "mix" ? '<span class="mixmark">🧪</span>' : ""}</div>
     <div class="info">
-      <div class="nm">${escapeHtml(p.name)}${p.kind === "mix" ? '<span class="badge-mix">調色</span>' : ""}</div>
+      <div class="nm">${escapeHtml(p.name)}${p.kind === "mix" ? '<span class="badge-mix">調色</span>' : ""}${p.wanted ? '<span class="badge-want">欲しい</span>' : ""}</div>
       <div class="meta">
         ${p.maker ? `<span class="tag">${escapeHtml(p.maker)}</span>` : ""}
         ${p.series ? `<span class="tag">${escapeHtml(p.series)}</span>` : ""}
@@ -310,6 +312,9 @@ function cardHtml(p) {
       <button class="qbtn" data-act="plus">＋</button>
     </div>
     <div class="rowbtns">
+      ${p.wanted
+        ? `<button class="iconbtn buy" data-act="buy" title="購入した（在庫へ）">🛒</button>`
+        : `<button class="iconbtn want" data-act="want" title="欲しいものに追加">☆</button>`}
       <button class="iconbtn" data-act="edit">✎</button>
       <button class="iconbtn del" data-act="del">🗑</button>
     </div>
@@ -333,6 +338,13 @@ async function onListClick(e) {
   const act = btn.dataset.act;
   if (act === "plus") { p.qty = (Number(p.qty) || 0) + 1; p.updatedAt = now(); await persist(); render(); }
   else if (act === "minus") { p.qty = Math.max(0, (Number(p.qty) || 0) - 1); p.updatedAt = now(); await persist(); render(); }
+  else if (act === "want") { p.wanted = true; p.updatedAt = now(); await persist(); render(); }
+  else if (act === "buy") {
+    p.wanted = false;
+    if ((Number(p.qty) || 0) < 1) p.qty = 1;
+    p.updatedAt = now();
+    await persist(); render();
+  }
   else if (act === "edit") { openForm(p); }
   else if (act === "del") {
     if (confirm(`「${p.name}」を削除しますか？`)) {
@@ -386,6 +398,7 @@ function openForm(p) {
   $("i-series").value = p ? (p.series || "") : "";
   $("i-color").value = p ? p.colorKey : "other";
   $("i-code").value = p ? (p.code || "") : "";
+  $("i-wanted").checked = p ? !!p.wanted : false;
   $("i-qty").value = p ? p.qty : 1;
   const rem = p ? clampRem(p.remaining) : 100;
   $("i-remaining").value = rem; $("rem-val").textContent = rem;
@@ -411,6 +424,7 @@ async function saveForm() {
     series: $("i-series").value.trim(),
     colorKey: $("i-color").value,
     code: $("i-code").value.trim(),
+    wanted: $("i-wanted").checked,
     qty: Math.max(0, Number($("i-qty").value) || 0),
     remaining: Math.max(0, Math.min(100, Number($("i-remaining").value) || 0)),
     barcode: $("i-barcode").value.trim(),
@@ -567,7 +581,7 @@ async function importCsvText(text) {
     state.paints.push({
       id: uid(), kind: "product",
       name: r.name, maker: r.maker, series: r.series, code: r.code,
-      colorKey: r.colorKey, qty: 0, remaining: 100,
+      colorKey: r.colorKey, qty: 0, remaining: 100, wanted: false,
       barcode: r.barcode, note: r.note, recipe: [], recipeNote: "",
       createdAt: now(), updatedAt: now(),
     });
