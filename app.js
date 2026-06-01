@@ -198,7 +198,7 @@ function getFiltered() {
     if (currentView === "mix" && p.kind !== "mix") return false;
     if (currentView === "wanted" && !p.wanted) return false;
     if (q) {
-      const hay = ((p.name || "") + " " + (p.code || "")).toLowerCase();
+      const hay = ((p.name || "") + " " + (p.nameJa || "") + " " + (p.code || "")).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     if (fm && (p.maker || "") !== fm) return false;
@@ -293,7 +293,8 @@ function cardHtml(p) {
   return `<div class="card ${p.wanted ? "wanted" : ""}" data-id="${p.id}">
     <div class="swatch${cls}" style="background-color:${c.color}">${p.kind === "mix" ? '<span class="mixmark">🧪</span>' : ""}</div>
     <div class="info">
-      <div class="nm">${escapeHtml(p.name)}${p.kind === "mix" ? '<span class="badge-mix">調色</span>' : ""}${p.wanted ? '<span class="badge-want">欲しい</span>' : ""}</div>
+      <div class="nm">${escapeHtml(p.nameJa || p.name)}${p.kind === "mix" ? '<span class="badge-mix">調色</span>' : ""}${p.wanted ? '<span class="badge-want">欲しい</span>' : ""}</div>
+      ${p.nameJa ? `<div class="nm-sub">${escapeHtml(p.name)}</div>` : ""}
       <div class="meta">
         ${p.maker ? `<span class="tag">${escapeHtml(p.maker)}</span>` : ""}
         ${p.series ? `<span class="tag">${escapeHtml(p.series)}</span>` : ""}
@@ -394,6 +395,7 @@ function openForm(p) {
   $("edit-id").value = p ? p.id : "";
   setKind(p ? (p.kind || "product") : "product");
   $("i-name").value = p ? p.name : "";
+  $("i-nameja").value = p ? (p.nameJa || "") : "";
   $("i-maker").value = p ? (p.maker || "") : "";
   $("i-series").value = p ? (p.series || "") : "";
   $("i-color").value = p ? p.colorKey : "other";
@@ -420,6 +422,7 @@ async function saveForm() {
   const data = {
     kind: formKind,
     name,
+    nameJa: $("i-nameja").value.trim(),
     maker: $("i-maker").value.trim() || (formKind === "mix" ? "自作" : ""),
     series: $("i-series").value.trim(),
     colorKey: $("i-color").value,
@@ -549,6 +552,7 @@ async function importCsvText(text) {
   const header = parseCsvLine(lines[headerIdx]).map(h => h.toLowerCase());
   const col = name => header.indexOf(name);
   const iMaker = col("maker"), iSeries = col("series"), iName = col("name"),
+        iNameJa = col("name_ja"),
         iCode = col("code"), iJan = col("jan"), iColor = col("color_key"), iNote = col("note");
 
   const colorKeys = new Set(COLOR_TYPES.map(c => c.key));
@@ -564,6 +568,7 @@ async function importCsvText(text) {
       maker: iMaker >= 0 ? cells[iMaker] : "",
       series: iSeries >= 0 ? cells[iSeries] : "",
       name,
+      nameJa: iNameJa >= 0 ? (cells[iNameJa] || "") : "",
       code: iCode >= 0 ? cells[iCode] : "",
       barcode: iJan >= 0 ? (cells[iJan] || "") : "",
       colorKey,
@@ -580,7 +585,7 @@ async function importCsvText(text) {
     if (existing.has(keyOf(r))) { skipped++; return; }
     state.paints.push({
       id: uid(), kind: "product",
-      name: r.name, maker: r.maker, series: r.series, code: r.code,
+      name: r.name, nameJa: r.nameJa, maker: r.maker, series: r.series, code: r.code,
       colorKey: r.colorKey, qty: 0, remaining: 100, wanted: false,
       barcode: r.barcode, note: r.note, recipe: [], recipeNote: "",
       createdAt: now(), updatedAt: now(),

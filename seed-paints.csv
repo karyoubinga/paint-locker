@@ -6,7 +6,8 @@
 - ファレホは色数が非常に多いため、ご指定の5シリーズ（True Metallic Metal / Model Air / Mecha Color / Game Color / Game Air）の「枠と採番規則」だけを記載しています。色名は入っていません。
 - ファレホの行（name が「（...）」のプレースホルダ）は取込時にスキップされます。色を足すには、その行を複製し name を実際の色名に、code を実番号に書き換えてください。
   例： Vallejo,Model Air,Gun Metal,71.072,,metal,no,
-- 採番規則：Model Air=71.xxx / Mecha Color=69.xxx / Game Color=72.xxx / Game Air=72.7xx中心 / True Metallic Metal=手元のボトルで要確認
+- 日本語名を取り込みたい場合は、ヘッダに name_ja 列を足し、各行に日本語名を書いてください（任意）。空欄や列なしの場合は英語名で表示します。
+- 採番規則：Model Color=70.xxx / Model Air=71.xxx / Mecha Color=69.xxx / Game Color=72.xxx / Game Air=72.7xx中心 / Metal Color=77.7xx / Panzer Aces=70.3xx / True Metallic Metal・Xpress Color・Premium Color・Liquid Gold=手元のボトルで要確認
 
 maker,series,name,code,jan,color_key,needs_check,note
 Gaahleri,Metallic,Zirconium Black,KM001,,black,no,公式色名より
@@ -58,3 +59,9 @@ Vallejo,Model Air,（色名を各自追記。番号は 71.xxx 形式）,71.,,oth
 Vallejo,Mecha Color,（色名を各自追記。番号は 69.xxx 形式）,69.,,other,yes,シリーズ枠。例 69.065 Dark Steel
 Vallejo,Game Color,（色名を各自追記。番号は 72.xxx 形式）,72.,,other,yes,シリーズ枠。例 72.052 Silver
 Vallejo,Game Air,（色名を各自追記。番号は 72.7xx 形式が中心）,72.7,,other,yes,シリーズ枠。採番が混在するため要確認
+Vallejo,Model Color,（色名を各自追記。番号は 70.xxx 形式）,70.,,other,yes,シリーズ枠。例 70.950 Black。200色超のため未収録
+Vallejo,Metal Color,（色名を各自追記。番号は 77.7xx 形式）,77.7,,metal,yes,シリーズ枠。例 77.724 Silver
+Vallejo,Panzer Aces,（色名を各自追記。番号は 70.3xx 形式）,70.3,,other,yes,シリーズ枠。例 70.333 German Tankcrew Black
+Vallejo,Xpress Color,（色名を各自追記）,,,other,yes,シリーズ枠。採番は手元のボトルで要確認
+Vallejo,Premium Color,（色名を各自追記）,,,other,yes,シリーズ枠。採番は手元のボトルで要確認
+Vallejo,Liquid Gold,（色名を各自追記）,,,metal,yes,シリーズ枠。採番は手元のボトルで要確認

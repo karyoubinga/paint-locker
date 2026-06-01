@@ -110,6 +110,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);}
   border-radius:6px;padding:0 2px;}
 .info{flex:1;min-width:0;}
 .info .nm{font-weight:700;font-size:15px;}
+.info .nm-sub{font-size:11px;color:var(--muted);font-family:"Space Mono",monospace;margin-top:1px;}
 .badge-mix{font-size:10px;background:var(--accent2);color:#06231f;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:700;}
 .badge-want{font-size:10px;background:var(--warn);color:#2a2300;border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:700;}
 .card.wanted{border-style:dashed;border-color:var(--warn);}

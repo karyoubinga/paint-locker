@@ -52,7 +52,8 @@ interface RecipeItem {
 interface Paint {
   id: string;            // 一意なID
   kind: "product" | "mix"; // 市販品 or 調色（自作）
-  name: string;          // 塗料名（必須）
+  name: string;          // 塗料名（必須・通常は英語の正式名）
+  nameJa: string;        // 日本語名（任意。あれば表示の主役にする）
   maker: string;         // メーカー名（空可。mixの既定は "自作"）
   series: string;        // シリーズ名（空文字 = 指定なし）
   code: string;          // 商品番号/カラーコード（例: 71.245, KM003, K303）。任意
