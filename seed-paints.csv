@@ -1,0 +1,60 @@
+注意（必ずお読みください）
+この CSV は Claude が公式サイト等から作成した「下書き（たたき台）」です。確定データではありません。
+- jan（JANコード）は信頼できる一覧が公開されておらず、誤りを避けるため原則 空欄にしています。実物のバーコードを読み取って各自で埋めてください。
+- color_key（色系統）は色名から Claude が推定した目安です。実際の色味で適宜直してください。
+- needs_check 列が yes の行は、特に確認が必要な箇所です。
+- ファレホは色数が非常に多いため、ご指定の5シリーズ（True Metallic Metal / Model Air / Mecha Color / Game Color / Game Air）の「枠と採番規則」だけを記載しています。色名は入っていません。
+- ファレホの行（name が「（...）」のプレースホルダ）は取込時にスキップされます。色を足すには、その行を複製し name を実際の色名に、code を実番号に書き換えてください。
+  例： Vallejo,Model Air,Gun Metal,71.072,,metal,no,
+- 採番規則：Model Air=71.xxx / Mecha Color=69.xxx / Game Color=72.xxx / Game Air=72.7xx中心 / True Metallic Metal=手元のボトルで要確認
+
+maker,series,name,code,jan,color_key,needs_check,note
+Gaahleri,Metallic,Zirconium Black,KM001,,black,no,公式色名より
+Gaahleri,Metallic,Gun Metal,KM002,,metal,no,公式色名より
+Gaahleri,Metallic,Tungsten Steel,KM003,,metal,no,公式色名より
+Gaahleri,Metallic,Titanium Alloy,KM004,,metal,no,公式色名より
+Gaahleri,Metallic,Stainless Steel,KM005,,metal,no,公式色名より
+Gaahleri,Metallic,Silver,KM006,,metal,no,公式色名より
+Gaahleri,Metallic,Aluminium,KM007,,metal,no,公式色名より
+Gaahleri,Metallic,Red Copper,KM008,,metal,no,公式色名より
+Gaahleri,Metallic,Copper,KM009,,metal,no,公式色名より
+Gaahleri,Metallic,Scorched Gold,KM010,,metal,no,公式色名より
+Gaahleri,Metallic,Champagne Gold,KM011,,metal,no,公式色名より
+Gaahleri,Metallic,Flashy Gold,KM012,,metal,no,公式色名より
+Gaahleri,Primary,White,K001,,white,no,公式色名より
+Gaahleri,Primary,Black,K002,,black,no,公式色名より
+Gaahleri,Primary,Red,K003,,red,no,公式色名より
+Gaahleri,Primary,Orange,K004,,orange,no,公式色名より
+Gaahleri,Primary,Yellow,K005,,yellow,no,公式色名より
+Gaahleri,Primary,Green,K006,,green,no,公式色名より
+Gaahleri,Primary,Blue,K007,,blue,no,公式色名より
+Gaahleri,Primary,Purple,K008,,purple,no,公式色名より
+Gaahleri,Auto,Italian Racing Red,K201,,red,no,公式色名より
+Gaahleri,Auto,Flame Orange,K202,,orange,no,公式色名より
+Gaahleri,Auto,Modena Yellow,K203,,yellow,no,公式色名より
+Gaahleri,Auto,Mint Green,K204,,green,no,公式色名より
+Gaahleri,Auto,Racing Emerald,K205,,green,no,公式色名より
+Gaahleri,Auto,Baby Blue,K206,,blue,no,公式色名より
+Gaahleri,Auto,Scotia Blue,K207,,blue,no,公式色名より
+Gaahleri,Auto,Trace Gray,K208,,gray,no,公式色名より
+Gaahleri,Auto,Diamond White,K301,,white,no,公式色名より
+Gaahleri,Auto,Cosmic Black,K302,,black,no,公式色名より
+Gaahleri,Auto,Metallic Racing Red,K303,,red,no,公式色名より
+Gaahleri,Auto,Magma Orange,K304,,orange,no,公式色名より
+Gaahleri,Auto,Lustrous Orange,K305,,orange,no,公式色名より
+Gaahleri,Auto,Verde Green,K306,,green,no,公式色名より
+Gaahleri,Auto,Turquoise,K307,,blue,no,公式色名より
+Gaahleri,Auto,Metallic Oak Green,K308,,green,no,公式色名より
+Gaahleri,Auto,Almond Green,K309,,green,no,公式色名より
+Gaahleri,Auto,Inferno Green,K310,,green,no,公式色名より
+Gaahleri,Auto,Rally Spirit Blue,K311,,blue,no,公式色名より
+Gaahleri,Auto,Liquid Blue,K312,,blue,no,公式色名より
+Gaahleri,Auto,Metallic Blue Gray,K313,,gray,no,公式色名より
+Gaahleri,Auto,Metallic Purple Red,K314,,purple,no,公式色名より
+Gaahleri,Auto,Twilight Purple,K315,,purple,no,公式色名より
+Gaahleri,Auto,Graphite Gray,K316,,gray,no,公式色名より
+Vallejo,True Metallic Metal,（色名と番号を各自追記）,,,metal,yes,シリーズ枠。採番規則は手元のボトルで要確認（Metal Color 77.7xx とは別ライン）
+Vallejo,Model Air,（色名を各自追記。番号は 71.xxx 形式）,71.,,other,yes,シリーズ枠。例 71.072 Gun Metal。多数色のため未収録
+Vallejo,Mecha Color,（色名を各自追記。番号は 69.xxx 形式）,69.,,other,yes,シリーズ枠。例 69.065 Dark Steel
+Vallejo,Game Color,（色名を各自追記。番号は 72.xxx 形式）,72.,,other,yes,シリーズ枠。例 72.052 Silver
+Vallejo,Game Air,（色名を各自追記。番号は 72.7xx 形式が中心）,72.7,,other,yes,シリーズ枠。採番が混在するため要確認

@@ -48,7 +48,7 @@
   <div class="filters">
     <div class="full">
       <label class="fl">名前で検索</label>
-      <input id="f-search" placeholder="塗料名・色名で絞り込み">
+      <input id="f-search" placeholder="塗料名・色名・商品番号で絞り込み">
     </div>
     <div>
       <label class="fl">メーカー</label>
@@ -71,7 +71,10 @@
   <div id="loading" class="loading num">読み込み中…</div>
 
   <footer class="foot">
+    <button class="linkbtn" id="import-btn">初期データ取込(CSV)</button>
+    <span class="dot">・</span>
     <button class="linkbtn" id="export-btn">バックアップ書き出し(JSON)</button>
+    <input type="file" id="import-file" accept=".csv" hidden>
   </footer>
 </div>
 
@@ -110,14 +113,20 @@
         <select id="i-color"></select>
       </div>
       <div class="field">
-        <label class="fl">本数</label>
-        <input id="i-qty" type="number" min="0" value="1" class="num">
+        <label class="fl">商品番号 / カラーコード（任意）</label>
+        <input id="i-code" placeholder="例：71.245 / KM003 / K303">
       </div>
     </div>
 
-    <div class="field">
-      <label class="fl">残量 <span id="rem-val" class="num">100</span>%</label>
-      <input id="i-remaining" type="range" min="0" max="100" step="5" value="100">
+    <div class="grid2">
+      <div class="field">
+        <label class="fl">本数</label>
+        <input id="i-qty" type="number" min="0" value="1" class="num">
+      </div>
+      <div class="field">
+        <label class="fl">残量 <span id="rem-val" class="num">100</span>%</label>
+        <input id="i-remaining" type="range" min="0" max="100" step="5" value="100">
+      </div>
     </div>
 
     <div class="field" id="barcode-field">
@@ -177,14 +186,7 @@
   </script>
   <script src="storage.supabase.js"></script>
 -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  window.SUPABASE_CONFIG = {
-    url: "https://jrbnoujdeecotybqmxiq.supabase.co",   // 手順1のProject URL
-    anonKey: "sb_publishable_QORpqTLZzfu4bCa0-OsLqw_V_FoOPKq"
-  };
-</script>
-<script src="storage.supabase.js"></script>
+<script src="storage.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

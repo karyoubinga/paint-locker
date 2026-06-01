@@ -55,6 +55,7 @@ interface Paint {
   name: string;          // 塗料名（必須）
   maker: string;         // メーカー名（空可。mixの既定は "自作"）
   series: string;        // シリーズ名（空文字 = 指定なし）
+  code: string;          // 商品番号/カラーコード（例: 71.245, KM003, K303）。任意
   colorKey: ColorKey;    // 色系統
   qty: number;           // 本数（0以上）
   remaining: number;     // 残量 0〜100（%）
@@ -200,7 +201,8 @@ paint-locker/
 ├── app.js              画面描画とロジック
 ├── SPEC.md             本仕様書
 ├── README.md           起動方法とClaude Code運用メモ
-└── SETUP_SUPABASE.md   Supabase同期の構築手順
+├── SETUP_SUPABASE.md   Supabase同期の構築手順
+└── DEPLOY_GITHUB_PAGES.md  GitHub Pages公開手順
 ```
 
 依存ライブラリは html5-qrcode のみ（CDN読み込み）。ビルド工程は不要。

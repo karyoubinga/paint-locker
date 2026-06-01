@@ -26,7 +26,7 @@ const colorMap = Object.fromEntries(COLOR_TYPES.map(c => [c.key, c]));
 const NONE = "__NONE__"; // シリーズ「指定なし」を表すトークン
 
 /* ============ 状態 ============ */
-let state = { paints: [], pinnedMakers: [], schemaVersion: 2 };
+let state = { paints: [], pinnedMakers: [] };
 let currentView = "all";       // all | owned | mix
 let collapsed = new Set();      // 折りたたみ中のメーカーグループ
 let formKind = "product";       // フォームの種別
@@ -48,7 +48,6 @@ async function reloadFromStore() {
   const loaded = await PaintStore.load();
   state.paints = loaded.paints;
   state.pinnedMakers = loaded.pinnedMakers;
-  state.schemaVersion = loaded.schemaVersion || 2;
   $("loading").style.display = "none";
   render();
 }
@@ -98,10 +97,11 @@ function bindEvents() {
   $("recipe-add").addEventListener("click", () => { readRecipeFromDom(); recipeDraft.push({ name:"", parts:"", note:"" }); renderRecipeRows(); });
   // スキャナ
   $("scan-close").addEventListener("click", stopScan);
-  // エクスポート・インポート
+  // エクスポート
   $("export-btn").addEventListener("click", exportJson);
-  $("import-btn").addEventListener("click", () => $("import-input").click());
-  $("import-input").addEventListener("change", importFromFile);
+  // CSV取込
+  $("import-btn").addEventListener("click", () => $("import-file").click());
+  $("import-file").addEventListener("change", onImportFile);
   // 一覧（委譲）
   listEl.addEventListener("click", onListClick);
 }
@@ -139,7 +139,14 @@ function refreshMakerOptions() {
   if (makers.includes(cur)) fMaker.value = cur;
   // フォーム用 datalist
   $("maker-list").innerHTML = makers.map(m => `<option value="${escapeHtml(m)}">`).join("");
-  const allSeries = [...new Set(state.paints.map(p => p.series).filter(Boolean))].sort((a, b) => a.localeCompare(b, "ja"));
+  const allSeries = [...new Set(state.paints.map(p => p.series).filter(Boolean))];
+  // よく使うシリーズ名を候補に常駐させる（手登録を楽にする）
+  const presetSeries = [
+    "True Metallic Metal", "Model Air", "Mecha Color", "Game Color", "Game Air", "Model Color", "Metal Color",
+    "Metallic", "Primary", "Auto",
+  ];
+  presetSeries.forEach(s => { if (!allSeries.includes(s)) allSeries.push(s); });
+  allSeries.sort((a, b) => a.localeCompare(b, "ja"));
   $("series-list").innerHTML = allSeries.map(s => `<option value="${escapeHtml(s)}">`).join("");
 }
 
@@ -188,7 +195,10 @@ function getFiltered() {
   return state.paints.filter(p => {
     if (currentView === "owned" && !((Number(p.qty) || 0) >= 1)) return false;
     if (currentView === "mix" && p.kind !== "mix") return false;
-    if (q && !((p.name || "").toLowerCase().includes(q))) return false;
+    if (q) {
+      const hay = ((p.name || "") + " " + (p.code || "")).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
     if (fm && (p.maker || "") !== fm) return false;
     if (fs === NONE && (p.series || "") !== "") return false;
     if (fs && fs !== NONE && (p.series || "") !== fs) return false;
@@ -285,6 +295,7 @@ function cardHtml(p) {
       <div class="meta">
         ${p.maker ? `<span class="tag">${escapeHtml(p.maker)}</span>` : ""}
         ${p.series ? `<span class="tag">${escapeHtml(p.series)}</span>` : ""}
+        ${p.code ? `<span class="tag code">${escapeHtml(p.code)}</span>` : ""}
         <span class="tag">${c.label}</span>
         ${p.barcode ? `<span class="barcode">📷${escapeHtml(p.barcode)}</span>` : ""}
       </div>
@@ -374,6 +385,7 @@ function openForm(p) {
   $("i-maker").value = p ? (p.maker || "") : "";
   $("i-series").value = p ? (p.series || "") : "";
   $("i-color").value = p ? p.colorKey : "other";
+  $("i-code").value = p ? (p.code || "") : "";
   $("i-qty").value = p ? p.qty : 1;
   const rem = p ? clampRem(p.remaining) : 100;
   $("i-remaining").value = rem; $("rem-val").textContent = rem;
@@ -398,6 +410,7 @@ async function saveForm() {
     maker: $("i-maker").value.trim() || (formKind === "mix" ? "自作" : ""),
     series: $("i-series").value.trim(),
     colorKey: $("i-color").value,
+    code: $("i-code").value.trim(),
     qty: Math.max(0, Number($("i-qty").value) || 0),
     remaining: Math.max(0, Math.min(100, Number($("i-remaining").value) || 0)),
     barcode: $("i-barcode").value.trim(),
@@ -473,7 +486,7 @@ function flashCard(id) {
   }, 50);
 }
 
-/* ============ エクスポート・インポート ============ */
+/* ============ エクスポート ============ */
 function exportJson() {
   const blob = new Blob([PaintStore.exportJson(state)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -484,20 +497,86 @@ function exportJson() {
   URL.revokeObjectURL(url);
 }
 
-async function importFromFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  e.target.value = "";
-  try {
-    const text = await file.text();
-    const data = JSON.parse(text);
-    if (!Array.isArray(data.paints)) { alert("形式が正しくありません（paints が見つかりません）。"); return; }
-    if (!confirm(`${data.paints.length}件の塗料データを読み込みます。\n現在のデータは上書きされます。よろしいですか？`)) return;
-    state.paints = data.paints;
-    state.pinnedMakers = Array.isArray(data.pinnedMakers) ? data.pinnedMakers : [];
-    await persist();
-    render();
-  } catch {
-    alert("ファイルの読み込みに失敗しました。正しいJSONファイルを選択してください。");
+/* ============ CSV取込 ============ */
+// ごく単純なCSVパーサ。ダブルクオートで囲んだカンマにも対応。
+function parseCsvLine(line) {
+  const out = [];
+  let cur = "", inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQ) {
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = false;
+      else cur += ch;
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ",") { out.push(cur); cur = ""; }
+      else cur += ch;
+    }
   }
+  out.push(cur);
+  return out.map(s => s.trim());
+}
+
+function onImportFile(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => { importCsvText(String(reader.result)); e.target.value = ""; };
+  reader.onerror = () => { alert("ファイルの読み込みに失敗しました。"); e.target.value = ""; };
+  reader.readAsText(file, "utf-8");
+}
+
+async function importCsvText(text) {
+  const lines = text.split(/\r?\n/);
+  // ヘッダ行（maker,series,name,... を含む行）を探す
+  const headerIdx = lines.findIndex(l => /(^|,)\s*maker\s*,/.test("," + l + ","));
+  if (headerIdx < 0) { alert("CSVのヘッダ行（maker,series,name,...）が見つかりません。"); return; }
+  const header = parseCsvLine(lines[headerIdx]).map(h => h.toLowerCase());
+  const col = name => header.indexOf(name);
+  const iMaker = col("maker"), iSeries = col("series"), iName = col("name"),
+        iCode = col("code"), iJan = col("jan"), iColor = col("color_key"), iNote = col("note");
+
+  const colorKeys = new Set(COLOR_TYPES.map(c => c.key));
+  const rows = [];
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw.trim()) continue;
+    const cells = parseCsvLine(raw);
+    const name = (iName >= 0 ? cells[iName] : "") || "";
+    if (!name || name.startsWith("（")) continue; // 見本プレースホルダ行はスキップ
+    const colorKey = (iColor >= 0 && colorKeys.has(cells[iColor])) ? cells[iColor] : "other";
+    rows.push({
+      maker: iMaker >= 0 ? cells[iMaker] : "",
+      series: iSeries >= 0 ? cells[iSeries] : "",
+      name,
+      code: iCode >= 0 ? cells[iCode] : "",
+      barcode: iJan >= 0 ? (cells[iJan] || "") : "",
+      colorKey,
+      note: iNote >= 0 ? (cells[iNote] || "") : "",
+    });
+  }
+  if (rows.length === 0) { alert("取り込める行が見つかりませんでした。"); return; }
+
+  // 重複判定：同じ maker + code（codeが空なら maker + name）で既存があればスキップ
+  const keyOf = r => (r.maker || "") + "|" + (r.code ? "c:" + r.code : "n:" + r.name);
+  const existing = new Set(state.paints.map(keyOf));
+  let added = 0, skipped = 0;
+  rows.forEach(r => {
+    if (existing.has(keyOf(r))) { skipped++; return; }
+    state.paints.push({
+      id: uid(), kind: "product",
+      name: r.name, maker: r.maker, series: r.series, code: r.code,
+      colorKey: r.colorKey, qty: 0, remaining: 100,
+      barcode: r.barcode, note: r.note, recipe: [], recipeNote: "",
+      createdAt: now(), updatedAt: now(),
+    });
+    existing.add(keyOf(r));
+    added++;
+  });
+
+  await persist();
+  render();
+  alert(`取込完了：${added}件を追加（重複スキップ ${skipped}件）。\n` +
+        `※在庫本数は0で登録しました。持っている色は本数を増やしてください。`);
 }
