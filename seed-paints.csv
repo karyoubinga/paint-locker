@@ -8,54 +8,54 @@
 - 日本語名を取り込みたい場合は、ヘッダに name_ja 列を足し、各行に日本語名を書いてください（任意）。空欄や列なしの場合は英語名で表示します。
 - name_ja（日本語名）は、英語名をきれいにカタカナ化できた色にだけ自動で入れた「参考の読み」です。公式の日本語名ではありません。固有色名を含むものは空欄（英語名で表示）にしています。公式名が分かるものは上書きしてください。
 - Game Air（76.xxx・51色）は CC298 Game Air R02 の対応表から追加しました。
-- hex（実際の色）は公式カタログのカラーチャートから読み取った色味の目安です（#RRGGBB）。印刷物からの抽出のため、実物の塗料の色とは多少異なります。Gaahleri等カタログに無い色は空欄で、アプリでは色系統の代表色で表示します。
+- Gaahleri（84色）は公式サイトの商品ページ（色見本・日本語名つき）から収録しました。hexは色見本からの目安、日本語名は公式表記です。JANは未収録。
 - 採番規則：Model Color=70.xxx / Model Air=71.xxx / Mecha Color=69.xxx / Game Color=72.xxx / Game Air=72.7xx中心 / Metal Color=77.7xx / Panzer Aces=70.3xx / True Metallic Metal・Xpress Color・Premium Color・Liquid Gold=手元のボトルで要確認
 
 maker,series,name,name_ja,code,jan,color_key,hex,needs_check,note
-Gaahleri,Metallic,Zirconium Black,,KM001,,black,,no,公式色名より
-Gaahleri,Metallic,Gun Metal,,KM002,,metal,,no,公式色名より
-Gaahleri,Metallic,Tungsten Steel,,KM003,,metal,,no,公式色名より
-Gaahleri,Metallic,Titanium Alloy,,KM004,,metal,,no,公式色名より
-Gaahleri,Metallic,Stainless Steel,,KM005,,metal,,no,公式色名より
-Gaahleri,Metallic,Silver,シルバー,KM006,,metal,,no,公式色名より
-Gaahleri,Metallic,Aluminium,アルミニウム,KM007,,metal,,no,公式色名より
-Gaahleri,Metallic,Red Copper,レッドカッパー,KM008,,metal,,no,公式色名より
-Gaahleri,Metallic,Copper,カッパー,KM009,,metal,,no,公式色名より
-Gaahleri,Metallic,Scorched Gold,,KM010,,metal,,no,公式色名より
-Gaahleri,Metallic,Champagne Gold,,KM011,,metal,,no,公式色名より
-Gaahleri,Metallic,Flashy Gold,,KM012,,metal,,no,公式色名より
-Gaahleri,Primary,White,ホワイト,K001,,white,,no,公式色名より
-Gaahleri,Primary,Black,ブラック,K002,,black,,no,公式色名より
-Gaahleri,Primary,Red,レッド,K003,,red,,no,公式色名より
-Gaahleri,Primary,Orange,オレンジ,K004,,orange,,no,公式色名より
-Gaahleri,Primary,Yellow,イエロー,K005,,yellow,,no,公式色名より
-Gaahleri,Primary,Green,グリーン,K006,,green,,no,公式色名より
-Gaahleri,Primary,Blue,ブルー,K007,,blue,,no,公式色名より
-Gaahleri,Primary,Purple,パープル,K008,,purple,,no,公式色名より
-Gaahleri,Auto,Italian Racing Red,,K201,,red,,no,公式色名より
+Gaahleri,Metal,Zirconium Black,ジルコニウムブラック,KM001,,black,#2b2b2d,no,公式サイト色見本より
+Gaahleri,Metal,Gun Metal,ガンメタル,KM002,,metal,#6f7175,no,公式サイト色見本より
+Gaahleri,Metal,Tungsten Steel,タングステンスチール,KM003,,metal,#c9cdc9,no,公式サイト色見本より
+Gaahleri,Metal,Titanium Alloy,チタニウムアロイ,KM004,,metal,#cfc9bd,no,公式サイト色見本より
+Gaahleri,Metal,Stainless Steel,ステンレススチール,KM005,,metal,#c2c4c6,no,公式サイト色見本より
+Gaahleri,Metal,Silver,シルバー,KM006,,metal,#cfd2d4,no,公式サイト色見本より
+Gaahleri,Metal,Aluminium,アルミニウム,KM007,,metal,#c6c9cc,no,公式サイト色見本より
+Gaahleri,Metal,Red Copper,レッドカッパー,KM008,,metal,#b07a5e,no,公式サイト色見本より
+Gaahleri,Metal,Copper,カッパー,KM009,,metal,#c79152,no,公式サイト色見本より
+Gaahleri,Metal,Scorched Gold,スコーチドゴールド,KM010,,metal,#b08d5a,no,公式サイト色見本より
+Gaahleri,Metal,Champagne Gold,シャンパンゴールド,KM011,,metal,#c9a96a,no,公式サイト色見本より
+Gaahleri,Metal,Flashy Gold,フラッシーゴールド,KM012,,metal,#d2a23c,no,公式サイト色見本より
+Gaahleri,Primary,White,ホワイト,K001,,white,#eef0ef,no,公式サイト色見本より
+Gaahleri,Primary,Black,ブラック,K002,,black,#1d1d1f,no,公式サイト色見本より
+Gaahleri,Primary,Red,レッド,K003,,red,#c01f24,no,公式サイト色見本より
+Gaahleri,Primary,Orange,オレンジ,K004,,orange,#e8662a,no,公式サイト色見本より
+Gaahleri,Primary,Yellow,イエロー,K005,,yellow,#f1c40f,no,公式サイト色見本より
+Gaahleri,Primary,Green,グリーン,K006,,green,#2f9e54,no,公式サイト色見本より
+Gaahleri,Primary,Blue,ブルー,K007,,blue,#2236a8,no,公式サイト色見本より
+Gaahleri,Primary,Purple,パープル,K008,,purple,#6b3fa0,no,公式サイト色見本より
+Gaahleri,Auto,Italian Racing Red,イタリアンレーシングレッド,K201,,red,#d2241f,no,公式サイト色見本より
 Gaahleri,Auto,Flame Orange,,K202,,orange,,no,公式色名より
-Gaahleri,Auto,Modena Yellow,,K203,,yellow,,no,公式色名より
-Gaahleri,Auto,Mint Green,,K204,,green,,no,公式色名より
+Gaahleri,Auto,Modena Yellow,モデナイエロー,K203,,yellow,#f2c012,no,公式サイト色見本より
+Gaahleri,Auto,Mint Green,ミントグリーン,K204,,green,#6fd0a8,no,公式サイト色見本より
 Gaahleri,Auto,Racing Emerald,,K205,,green,,no,公式色名より
-Gaahleri,Auto,Baby Blue,,K206,,blue,,no,公式色名より
-Gaahleri,Auto,Scotia Blue,,K207,,blue,,no,公式色名より
-Gaahleri,Auto,Trace Gray,,K208,,gray,,no,公式色名より
-Gaahleri,Auto,Diamond White,,K301,,white,,no,公式色名より
-Gaahleri,Auto,Cosmic Black,,K302,,black,,no,公式色名より
-Gaahleri,Auto,Metallic Racing Red,,K303,,red,,no,公式色名より
-Gaahleri,Auto,Magma Orange,,K304,,orange,,no,公式色名より
-Gaahleri,Auto,Lustrous Orange,,K305,,orange,,no,公式色名より
-Gaahleri,Auto,Verde Green,,K306,,green,,no,公式色名より
-Gaahleri,Auto,Turquoise,ターコイズ,K307,,blue,,no,公式色名より
+Gaahleri,Auto,Baby Blue,ベビーブルー,K206,,blue,#9cc7e0,no,公式サイト色見本より
+Gaahleri,Auto,Scotia Blue,スコティアブルー,K207,,blue,#22439a,no,公式サイト色見本より
+Gaahleri,Auto,Track Gray,トレースグレー,K208,,gray,#6a6e71,no,公式サイト色見本より
+Gaahleri,Auto,Diamond White,ダイヤモンドホワイト,K301,,white,#e9ebec,no,公式サイト色見本より
+Gaahleri,Auto,Cosmic Black,コズミックブラック,K302,,black,#1d1d1f,no,公式サイト色見本より
+Gaahleri,Auto,Metallic Racing Red,メタリックレーシングレッド,K303,,red,#c0231f,no,公式サイト色見本より
+Gaahleri,Auto,Magma Orange,マグマオレンジ,K304,,orange,#e23a1f,no,公式サイト色見本より
+Gaahleri,Auto,Lustrous Orange,ラストラスオレンジ,K305,,orange,#e8742a,no,公式サイト色見本より
+Gaahleri,Auto,Verde Green,ヴェルデグリーン,K306,,green,#8fb83c,no,公式サイト色見本より
+Gaahleri,Auto,Turquoise,ターコイズ,K307,,green,#1f9e84,no,公式サイト色見本より
 Gaahleri,Auto,Metallic Oak Green,,K308,,green,,no,公式色名より
 Gaahleri,Auto,Almond Green,,K309,,green,,no,公式色名より
-Gaahleri,Auto,Inferno Green,,K310,,green,,no,公式色名より
-Gaahleri,Auto,Rally Spirit Blue,,K311,,blue,,no,公式色名より
-Gaahleri,Auto,Liquid Blue,,K312,,blue,,no,公式色名より
-Gaahleri,Auto,Metallic Blue Gray,,K313,,gray,,no,公式色名より
-Gaahleri,Auto,Metallic Purple Red,,K314,,purple,,no,公式色名より
-Gaahleri,Auto,Twilight Purple,,K315,,purple,,no,公式色名より
-Gaahleri,Auto,Graphite Gray,グラファイトグレー,K316,,gray,,no,公式色名より
+Gaahleri,Auto,Inferno Green,インフェルノグリーン,K310,,green,#7fae6f,no,公式サイト色見本より
+Gaahleri,Auto,Rally Spirit Blue,ラリースピリットブルー,K311,,blue,#1f8fd0,no,公式サイト色見本より
+Gaahleri,Auto,Liquid Blue,リキッドブルー,K312,,blue,#2f7fc0,no,公式サイト色見本より
+Gaahleri,Auto,Metallic Blue Gray,メタリックブルーグレー,K313,,gray,#8aa0b0,no,公式サイト色見本より
+Gaahleri,Auto,Metallic Purple Red,メタリックパープルレッド,K314,,purple,#a06a80,no,公式サイト色見本より
+Gaahleri,Auto,Twilight Purple,トワイライトパープル,K315,,purple,#8a5ca8,no,公式サイト色見本より
+Gaahleri,Auto,Graphite Gray,グラファイトグレー,K316,,gray,#9aa0a6,no,公式サイト色見本より
 Vallejo,True Metallic Metal,（色名と番号を各自追記）,,,,metal,,yes,シリーズ枠。採番規則は手元のボトルで要確認（Metal Color 77.7xx とは別ライン）
 Vallejo,Panzer Aces,（色名を各自追記。番号は 70.3xx 形式）,,70.3,,other,,yes,シリーズ枠。例 70.333 German Tankcrew Black
 Vallejo,Xpress Color,（色名を各自追記）,,,,other,,yes,シリーズ枠。採番は手元のボトルで要確認
@@ -778,3 +778,43 @@ Vallejo,Game Air,Sombre Grey,ソンブルグレー,76.048,,gray,#363d43,no,CC298
 Vallejo,Game Air,Stonewall Grey,ストーンウォールグレー,76.049,,gray,#726d65,no,CC298 Game Air R02
 Vallejo,Game Air,Neutral Grey,ニュートラルグレー,76.050,,gray,#474747,no,CC298 Game Air R02
 Vallejo,Game Air,Black,ブラック,76.051,,black,#000000,no,CC298 Game Air R02
+Gaahleri,Primary,Off White,オフホワイト,K009,,white,#ece9e0,no,公式サイト色見本より
+Gaahleri,Primary,Gray,グレー,K010,,gray,#8d9094,no,公式サイト色見本より
+Gaahleri,Primary,Shine Red,シャインレッド,K011,,red,#cf2230,no,公式サイト色見本より
+Gaahleri,Primary,Orange Yellow,オレンジイエロー,K012,,orange,#f0a51e,no,公式サイト色見本より
+Gaahleri,Primary,Emerald Green,エメラルドグリーン,K013,,green,#1f9e74,no,公式サイト色見本より
+Gaahleri,Primary,Cobalt Blue,コバルトブルー,K014,,blue,#21338f,no,公式サイト色見本より
+Gaahleri,Primary,Violet,バイオレット,K015,,purple,#6a3da0,no,公式サイト色見本より
+Gaahleri,Primary,Pink,ピンク,K016,,pink,#e58aa8,no,公式サイト色見本より
+Gaahleri,Primary,Russet,ラセット,K017,,red,#7d1f24,no,公式サイト色見本より
+Gaahleri,Primary,Brown,ブラウン,K018,,brown,#7a2e26,no,公式サイト色見本より
+Gaahleri,Primary,Dark Green,ダークグリーン,K022,,green,#2f3f33,no,公式サイト色見本より
+Gaahleri,Primary,Sky Blue,スカイブルー,K023,,blue,#2aa3da,no,公式サイト色見本より
+Gaahleri,Primary,Blue Gray,ブルーグレー,K024,,gray,#566069,no,公式サイト色見本より
+Gaahleri,Mecha,Cool White,クールホワイト,K101,,white,#e9ebec,no,公式サイト色見本より
+Gaahleri,Mecha,Bright Yellow,ブライトイエロー,K103,,yellow,#f2c521,no,公式サイト色見本より
+Gaahleri,Mecha,Bright Blue,ブライトブルー,K104,,blue,#1f4fb0,no,公式サイト色見本より
+Gaahleri,Mecha,Hibiscus Purple,ハイビスカスパープル,K107,,purple,#9a78c0,no,公式サイト色見本より
+Gaahleri,Mecha,Titanium Slate,チタンスレート,K108,,gray,#5a626b,no,公式サイト色見本より
+Gaahleri,Mecha,Phantom Gray,ファントムグレー,K109,,gray,#3a3d40,no,公式サイト色見本より
+Gaahleri,Mecha,Forge Red,フォージレッド,K110,,red,#cf2326,no,公式サイト色見本より
+Gaahleri,Mecha,Chestnut Red,チェスナットレッド,K112,,red,#7e2230,no,公式サイト色見本より
+Gaahleri,Mecha,Azure Blue,アズールブルー,K113,,blue,#2f6fd0,no,公式サイト色見本より
+Gaahleri,Mecha,Dark Azure,ダークアズール,K114,,blue,#1f3f8a,no,公式サイト色見本より
+Gaahleri,Mecha,Space Blue,スペースブルー,K115,,blue,#26304f,no,公式サイト色見本より
+Gaahleri,Mecha,Dark Space Blue,ダークスペースブルー,K116,,gray,#3a414e,no,公式サイト色見本より
+Gaahleri,Mecha,Freedom Blue,ダムフリーブルー,K117,,blue,#2438a6,no,公式サイト色見本より
+Gaahleri,Mecha,Desert Rose,デザートローズ,K118,,pink,#c98a90,no,公式サイト色見本より
+Gaahleri,Mecha,Armor White,アーマーホワイト,K119,,white,#e4e6e7,no,公式サイト色見本より
+Gaahleri,Mecha,Armor Gray,アーマーグレー,K120,,gray,#b8bcbf,no,公式サイト色見本より
+Gaahleri,Mecha,Armor Carbon,アーマーカーボン,K121,,gray,#33373b,no,公式サイト色見本より
+Gaahleri,Mecha,Dark Coral,ダークコーラル,K122,,red,#c0354c,no,公式サイト色見本より
+Gaahleri,Mecha,Sunset Orange,サンセットオレンジ,K123,,orange,#f0a51e,no,公式サイト色見本より
+Gaahleri,Translucent,Clear White,半透明ホワイト,KC001,,clear,#dfe2e0,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Black,半透明ブラック,KC002,,clear,#2a2a2c,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Red,半透明レッド,KC003,,clear,#c0231f,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Yellow,半透明イエロー,KC005,,clear,#f1c40f,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Green,半透明グリーン,KC006,,clear,#2f9e74,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Blue,半透明ブルー,KC008,,clear,#2f7fd0,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Purple,半透明パープル,KC009,,clear,#8a5ca8,no,公式サイト色見本より
+Gaahleri,Translucent,Clear Pink,半透明ピンク,KC010,,clear,#e58aa8,no,公式サイト色見本より
