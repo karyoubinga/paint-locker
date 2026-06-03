@@ -91,6 +91,10 @@ function bindEvents() {
   $("form-overlay").addEventListener("click", e => { if (e.target === $("form-overlay")) closeForm(); });
   $("form-save").addEventListener("click", saveForm);
   $("i-remaining").addEventListener("input", e => { $("rem-val").textContent = e.target.value; });
+  $("i-hex").addEventListener("input", () => setHexField($("i-hex").value));
+  $("hex-clear").addEventListener("click", () => {
+    setHexField($("i-hex").dataset.set ? "" : $("i-hex").value);
+  });
   document.querySelector(".kindtoggle").addEventListener("click", e => {
     const b = e.target.closest(".kbtn"); if (!b) return; setKind(b.dataset.kind);
   });
@@ -283,7 +287,10 @@ function render() {
 
 function cardHtml(p) {
   const c = colorMap[p.colorKey] || colorMap.other;
-  const cls = c.cls ? " " + c.cls : "";
+  const validHex = /^#[0-9a-fA-F]{6}$/.test(p.hex || "");
+  // 実際の色(hex)があればそれを使う。無ければ色系統の代表色。
+  const swatchColor = validHex ? p.hex : c.color;
+  const cls = (!validHex && c.cls) ? " " + c.cls : "";
   const rem = clampRem(p.remaining);
   const recipeHtml = (p.kind === "mix" && p.recipe && p.recipe.length)
     ? `<div class="recipe-view"><div class="rtitle">🧪 配合</div><ul>${
@@ -291,7 +298,7 @@ function cardHtml(p) {
       }</ul>${p.recipeNote ? `<div class="rnote">${escapeHtml(p.recipeNote)}</div>` : ""}</div>`
     : "";
   return `<div class="card ${p.wanted ? "wanted" : ""}" data-id="${p.id}">
-    <div class="swatch${cls}" style="background-color:${c.color}">${p.kind === "mix" ? '<span class="mixmark">🧪</span>' : ""}</div>
+    <div class="swatch${cls}" style="background-color:${swatchColor}">${p.kind === "mix" ? '<span class="mixmark">🧪</span>' : ""}</div>
     <div class="info">
       <div class="nm">${escapeHtml(p.nameJa || p.name)}${p.kind === "mix" ? '<span class="badge-mix">調色</span>' : ""}${p.wanted ? '<span class="badge-want">欲しい</span>' : ""}</div>
       ${p.nameJa ? `<div class="nm-sub">${escapeHtml(p.name)}</div>` : ""}
@@ -400,6 +407,7 @@ function openForm(p) {
   $("i-series").value = p ? (p.series || "") : "";
   $("i-color").value = p ? p.colorKey : "other";
   $("i-code").value = p ? (p.code || "") : "";
+  setHexField(p && /^#[0-9a-fA-F]{6}$/.test(p.hex || "") ? p.hex : "");
   $("i-wanted").checked = p ? !!p.wanted : false;
   $("i-qty").value = p ? p.qty : 1;
   const rem = p ? clampRem(p.remaining) : 100;
@@ -414,6 +422,22 @@ function openForm(p) {
 }
 function closeForm() { $("form-overlay").classList.remove("show"); }
 
+/* 実際の色(hex)欄の管理。「未設定」状態を data-set 属性で保持する */
+function setHexField(hex) {
+  const inp = $("i-hex"), btn = $("hex-clear");
+  if (hex) {
+    inp.value = hex; inp.dataset.set = "1";
+    btn.textContent = "未設定にする";
+  } else {
+    inp.dataset.set = ""; 
+    btn.textContent = "色を設定";
+  }
+}
+function hexFieldValue() {
+  const inp = $("i-hex");
+  return inp.dataset.set ? inp.value : "";
+}
+
 async function saveForm() {
   const name = $("i-name").value.trim();
   if (!name) { alert("塗料名を入力してください。"); return; }
@@ -427,6 +451,7 @@ async function saveForm() {
     series: $("i-series").value.trim(),
     colorKey: $("i-color").value,
     code: $("i-code").value.trim(),
+    hex: hexFieldValue(),
     wanted: $("i-wanted").checked,
     qty: Math.max(0, Number($("i-qty").value) || 0),
     remaining: Math.max(0, Math.min(100, Number($("i-remaining").value) || 0)),
@@ -553,7 +578,7 @@ async function importCsvText(text) {
   const col = name => header.indexOf(name);
   const iMaker = col("maker"), iSeries = col("series"), iName = col("name"),
         iNameJa = col("name_ja"),
-        iCode = col("code"), iJan = col("jan"), iColor = col("color_key"), iNote = col("note");
+        iCode = col("code"), iJan = col("jan"), iColor = col("color_key"), iHex = col("hex"), iNote = col("note");
 
   const colorKeys = new Set(COLOR_TYPES.map(c => c.key));
   const rows = [];
@@ -572,6 +597,7 @@ async function importCsvText(text) {
       code: iCode >= 0 ? cells[iCode] : "",
       barcode: iJan >= 0 ? (cells[iJan] || "") : "",
       colorKey,
+      hex: iHex >= 0 ? (cells[iHex] || "") : "",
       note: iNote >= 0 ? (cells[iNote] || "") : "",
     });
   }
@@ -586,7 +612,7 @@ async function importCsvText(text) {
     state.paints.push({
       id: uid(), kind: "product",
       name: r.name, nameJa: r.nameJa, maker: r.maker, series: r.series, code: r.code,
-      colorKey: r.colorKey, qty: 0, remaining: 100, wanted: false,
+      colorKey: r.colorKey, hex: r.hex || "", qty: 0, remaining: 100, wanted: false,
       barcode: r.barcode, note: r.note, recipe: [], recipeNote: "",
       createdAt: now(), updatedAt: now(),
     });

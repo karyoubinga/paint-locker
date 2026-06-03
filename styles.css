@@ -120,6 +120,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);}
 .chk{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer;}
 .chk input{width:auto;}
 .wanted-field{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.colorrow{display:flex;gap:8px;align-items:center;}
+.colorrow input[type=color]{width:46px;height:40px;padding:2px;border:1px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer;flex:0 0 auto;}
+.colorrow .btn{flex:1;justify-content:center;}
 .info .meta{font-size:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;align-items:center;}
 .tag{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:11px;}
 .tag.code{font-family:"Space Mono",monospace;color:var(--accent2);border-color:var(--accent2);}

@@ -119,9 +119,17 @@
         <select id="i-color"></select>
       </div>
       <div class="field">
-        <label class="fl">商品番号 / カラーコード（任意）</label>
-        <input id="i-code" placeholder="例：71.245 / KM003 / K303">
+        <label class="fl">実際の色（任意）</label>
+        <div class="colorrow">
+          <input type="color" id="i-hex" value="#5dd5c4">
+          <button type="button" class="btn btn-ghost small" id="hex-clear">未設定</button>
+        </div>
       </div>
+    </div>
+
+    <div class="field">
+      <label class="fl">商品番号 / カラーコード（任意）</label>
+      <input id="i-code" placeholder="例：71.245 / KM003 / K303">
     </div>
 
     <div class="grid2">

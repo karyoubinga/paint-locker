@@ -58,6 +58,7 @@ interface Paint {
   series: string;        // シリーズ名（空文字 = 指定なし）
   code: string;          // 商品番号/カラーコード（例: 71.245, KM003, K303）。任意
   colorKey: ColorKey;    // 色系統
+  hex: string;           // 実際の色 "#RRGGBB"（任意。あればスウォッチに使用）
   qty: number;           // 本数（0以上）
   wanted: boolean;       // 欲しいものリストに入れているか
   remaining: number;     // 残量 0〜100（%）
