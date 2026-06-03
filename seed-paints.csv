@@ -3,65 +3,777 @@
 - jan（JANコード）は信頼できる一覧が公開されておらず、誤りを避けるため原則 空欄にしています。実物のバーコードを読み取って各自で埋めてください。
 - color_key（色系統）は色名から Claude が推定した目安です。実際の色味で適宜直してください。
 - needs_check 列が yes の行は、特に確認が必要な箇所です。
-- ファレホは色数が非常に多いため、ご指定の5シリーズ（True Metallic Metal / Model Air / Mecha Color / Game Color / Game Air）の「枠と採番規則」だけを記載しています。色名は入っていません。
-- ファレホの行（name が「（...）」のプレースホルダ）は取込時にスキップされます。色を足すには、その行を複製し name を実際の色名に、code を実番号に書き換えてください。
-  例： Vallejo,Model Air,Gun Metal,71.072,,metal,no,
+- ファレホは公式カタログ（Catalogo 2026 R02）から番号・英語名を抽出して収録しました（Model Color / Model Air / Mecha Color / Game Color / Metal Color の単色、計666色）。note にカタログのページ番号を記載しています。
+- True Metallic Metal / Game Air / Panzer Aces / Xpress Color / Premium Color / Liquid Gold は今回のカタログから確実に抽出できなかったため、シリーズ枠のみ残しています（name が「（...）」の行は取込時にスキップ。色を足すには行を複製し name と code を実物に書き換え）。
 - 日本語名を取り込みたい場合は、ヘッダに name_ja 列を足し、各行に日本語名を書いてください（任意）。空欄や列なしの場合は英語名で表示します。
+- name_ja（日本語名）は、英語名をきれいにカタカナ化できた色にだけ自動で入れた「参考の読み」です。公式の日本語名ではありません。固有色名を含むものは空欄（英語名で表示）にしています。公式名が分かるものは上書きしてください。
+- Game Air（76.xxx・51色）は CC298 Game Air R02 の対応表から追加しました。
 - 採番規則：Model Color=70.xxx / Model Air=71.xxx / Mecha Color=69.xxx / Game Color=72.xxx / Game Air=72.7xx中心 / Metal Color=77.7xx / Panzer Aces=70.3xx / True Metallic Metal・Xpress Color・Premium Color・Liquid Gold=手元のボトルで要確認
 
-maker,series,name,code,jan,color_key,needs_check,note
-Gaahleri,Metallic,Zirconium Black,KM001,,black,no,公式色名より
-Gaahleri,Metallic,Gun Metal,KM002,,metal,no,公式色名より
-Gaahleri,Metallic,Tungsten Steel,KM003,,metal,no,公式色名より
-Gaahleri,Metallic,Titanium Alloy,KM004,,metal,no,公式色名より
-Gaahleri,Metallic,Stainless Steel,KM005,,metal,no,公式色名より
-Gaahleri,Metallic,Silver,KM006,,metal,no,公式色名より
-Gaahleri,Metallic,Aluminium,KM007,,metal,no,公式色名より
-Gaahleri,Metallic,Red Copper,KM008,,metal,no,公式色名より
-Gaahleri,Metallic,Copper,KM009,,metal,no,公式色名より
-Gaahleri,Metallic,Scorched Gold,KM010,,metal,no,公式色名より
-Gaahleri,Metallic,Champagne Gold,KM011,,metal,no,公式色名より
-Gaahleri,Metallic,Flashy Gold,KM012,,metal,no,公式色名より
-Gaahleri,Primary,White,K001,,white,no,公式色名より
-Gaahleri,Primary,Black,K002,,black,no,公式色名より
-Gaahleri,Primary,Red,K003,,red,no,公式色名より
-Gaahleri,Primary,Orange,K004,,orange,no,公式色名より
-Gaahleri,Primary,Yellow,K005,,yellow,no,公式色名より
-Gaahleri,Primary,Green,K006,,green,no,公式色名より
-Gaahleri,Primary,Blue,K007,,blue,no,公式色名より
-Gaahleri,Primary,Purple,K008,,purple,no,公式色名より
-Gaahleri,Auto,Italian Racing Red,K201,,red,no,公式色名より
-Gaahleri,Auto,Flame Orange,K202,,orange,no,公式色名より
-Gaahleri,Auto,Modena Yellow,K203,,yellow,no,公式色名より
-Gaahleri,Auto,Mint Green,K204,,green,no,公式色名より
-Gaahleri,Auto,Racing Emerald,K205,,green,no,公式色名より
-Gaahleri,Auto,Baby Blue,K206,,blue,no,公式色名より
-Gaahleri,Auto,Scotia Blue,K207,,blue,no,公式色名より
-Gaahleri,Auto,Trace Gray,K208,,gray,no,公式色名より
-Gaahleri,Auto,Diamond White,K301,,white,no,公式色名より
-Gaahleri,Auto,Cosmic Black,K302,,black,no,公式色名より
-Gaahleri,Auto,Metallic Racing Red,K303,,red,no,公式色名より
-Gaahleri,Auto,Magma Orange,K304,,orange,no,公式色名より
-Gaahleri,Auto,Lustrous Orange,K305,,orange,no,公式色名より
-Gaahleri,Auto,Verde Green,K306,,green,no,公式色名より
-Gaahleri,Auto,Turquoise,K307,,blue,no,公式色名より
-Gaahleri,Auto,Metallic Oak Green,K308,,green,no,公式色名より
-Gaahleri,Auto,Almond Green,K309,,green,no,公式色名より
-Gaahleri,Auto,Inferno Green,K310,,green,no,公式色名より
-Gaahleri,Auto,Rally Spirit Blue,K311,,blue,no,公式色名より
-Gaahleri,Auto,Liquid Blue,K312,,blue,no,公式色名より
-Gaahleri,Auto,Metallic Blue Gray,K313,,gray,no,公式色名より
-Gaahleri,Auto,Metallic Purple Red,K314,,purple,no,公式色名より
-Gaahleri,Auto,Twilight Purple,K315,,purple,no,公式色名より
-Gaahleri,Auto,Graphite Gray,K316,,gray,no,公式色名より
-Vallejo,True Metallic Metal,（色名と番号を各自追記）,,,metal,yes,シリーズ枠。採番規則は手元のボトルで要確認（Metal Color 77.7xx とは別ライン）
-Vallejo,Model Air,（色名を各自追記。番号は 71.xxx 形式）,71.,,other,yes,シリーズ枠。例 71.072 Gun Metal。多数色のため未収録
-Vallejo,Mecha Color,（色名を各自追記。番号は 69.xxx 形式）,69.,,other,yes,シリーズ枠。例 69.065 Dark Steel
-Vallejo,Game Color,（色名を各自追記。番号は 72.xxx 形式）,72.,,other,yes,シリーズ枠。例 72.052 Silver
-Vallejo,Game Air,（色名を各自追記。番号は 72.7xx 形式が中心）,72.7,,other,yes,シリーズ枠。採番が混在するため要確認
-Vallejo,Model Color,（色名を各自追記。番号は 70.xxx 形式）,70.,,other,yes,シリーズ枠。例 70.950 Black。200色超のため未収録
-Vallejo,Metal Color,（色名を各自追記。番号は 77.7xx 形式）,77.7,,metal,yes,シリーズ枠。例 77.724 Silver
-Vallejo,Panzer Aces,（色名を各自追記。番号は 70.3xx 形式）,70.3,,other,yes,シリーズ枠。例 70.333 German Tankcrew Black
-Vallejo,Xpress Color,（色名を各自追記）,,,other,yes,シリーズ枠。採番は手元のボトルで要確認
-Vallejo,Premium Color,（色名を各自追記）,,,other,yes,シリーズ枠。採番は手元のボトルで要確認
-Vallejo,Liquid Gold,（色名を各自追記）,,,metal,yes,シリーズ枠。採番は手元のボトルで要確認
+maker,series,name,name_ja,code,jan,color_key,needs_check,note
+Gaahleri,Metallic,Zirconium Black,,KM001,,black,no,公式色名より
+Gaahleri,Metallic,Gun Metal,,KM002,,metal,no,公式色名より
+Gaahleri,Metallic,Tungsten Steel,,KM003,,metal,no,公式色名より
+Gaahleri,Metallic,Titanium Alloy,,KM004,,metal,no,公式色名より
+Gaahleri,Metallic,Stainless Steel,,KM005,,metal,no,公式色名より
+Gaahleri,Metallic,Silver,シルバー,KM006,,metal,no,公式色名より
+Gaahleri,Metallic,Aluminium,アルミニウム,KM007,,metal,no,公式色名より
+Gaahleri,Metallic,Red Copper,レッドカッパー,KM008,,metal,no,公式色名より
+Gaahleri,Metallic,Copper,カッパー,KM009,,metal,no,公式色名より
+Gaahleri,Metallic,Scorched Gold,,KM010,,metal,no,公式色名より
+Gaahleri,Metallic,Champagne Gold,,KM011,,metal,no,公式色名より
+Gaahleri,Metallic,Flashy Gold,,KM012,,metal,no,公式色名より
+Gaahleri,Primary,White,ホワイト,K001,,white,no,公式色名より
+Gaahleri,Primary,Black,ブラック,K002,,black,no,公式色名より
+Gaahleri,Primary,Red,レッド,K003,,red,no,公式色名より
+Gaahleri,Primary,Orange,オレンジ,K004,,orange,no,公式色名より
+Gaahleri,Primary,Yellow,イエロー,K005,,yellow,no,公式色名より
+Gaahleri,Primary,Green,グリーン,K006,,green,no,公式色名より
+Gaahleri,Primary,Blue,ブルー,K007,,blue,no,公式色名より
+Gaahleri,Primary,Purple,パープル,K008,,purple,no,公式色名より
+Gaahleri,Auto,Italian Racing Red,,K201,,red,no,公式色名より
+Gaahleri,Auto,Flame Orange,,K202,,orange,no,公式色名より
+Gaahleri,Auto,Modena Yellow,,K203,,yellow,no,公式色名より
+Gaahleri,Auto,Mint Green,,K204,,green,no,公式色名より
+Gaahleri,Auto,Racing Emerald,,K205,,green,no,公式色名より
+Gaahleri,Auto,Baby Blue,,K206,,blue,no,公式色名より
+Gaahleri,Auto,Scotia Blue,,K207,,blue,no,公式色名より
+Gaahleri,Auto,Trace Gray,,K208,,gray,no,公式色名より
+Gaahleri,Auto,Diamond White,,K301,,white,no,公式色名より
+Gaahleri,Auto,Cosmic Black,,K302,,black,no,公式色名より
+Gaahleri,Auto,Metallic Racing Red,,K303,,red,no,公式色名より
+Gaahleri,Auto,Magma Orange,,K304,,orange,no,公式色名より
+Gaahleri,Auto,Lustrous Orange,,K305,,orange,no,公式色名より
+Gaahleri,Auto,Verde Green,,K306,,green,no,公式色名より
+Gaahleri,Auto,Turquoise,ターコイズ,K307,,blue,no,公式色名より
+Gaahleri,Auto,Metallic Oak Green,,K308,,green,no,公式色名より
+Gaahleri,Auto,Almond Green,,K309,,green,no,公式色名より
+Gaahleri,Auto,Inferno Green,,K310,,green,no,公式色名より
+Gaahleri,Auto,Rally Spirit Blue,,K311,,blue,no,公式色名より
+Gaahleri,Auto,Liquid Blue,,K312,,blue,no,公式色名より
+Gaahleri,Auto,Metallic Blue Gray,,K313,,gray,no,公式色名より
+Gaahleri,Auto,Metallic Purple Red,,K314,,purple,no,公式色名より
+Gaahleri,Auto,Twilight Purple,,K315,,purple,no,公式色名より
+Gaahleri,Auto,Graphite Gray,グラファイトグレー,K316,,gray,no,公式色名より
+Vallejo,True Metallic Metal,（色名と番号を各自追記）,,,,metal,yes,シリーズ枠。採番規則は手元のボトルで要確認（Metal Color 77.7xx とは別ライン）
+Vallejo,Panzer Aces,（色名を各自追記。番号は 70.3xx 形式）,,70.3,,other,yes,シリーズ枠。例 70.333 German Tankcrew Black
+Vallejo,Xpress Color,（色名を各自追記）,,,,other,yes,シリーズ枠。採番は手元のボトルで要確認
+Vallejo,Premium Color,（色名を各自追記）,,,,other,yes,シリーズ枠。採番は手元のボトルで要確認
+Vallejo,Liquid Gold,（色名を各自追記）,,,,metal,yes,シリーズ枠。採番は手元のボトルで要確認
+Vallejo,Mecha Color,Pure White,,69.001,,white,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,White Grey,ホワイトグレー,69.002,,white,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Off-White,オフホワイト,69.003,,white,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Yellow,イエロー,69.004,,yellow,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Light Flesh,ライトフレッシュ,69.005,,brown,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Pink,ピンク,69.006,,pink,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Orange,オレンジ,69.007,,orange,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Red,レッド,69.008,,red,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,SZ Red,,69.009,,red,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Magenta,マゼンタ,69.010,,purple,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Dark Red,ダークレッド,69.011,,red,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Purple,パープル,69.012,,purple,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Titan Blue,,69.013,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Grey Green,グレーグリーン,69.014,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Blue Grey,ブルーグレー,69.015,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Light Blue,ライトブルー,69.016,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Sky Blue,スカイブルー,69.017,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Deep Blue,ディープブルー,69.018,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Blue,ブルー,69.019,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Electric Blue,エレクトリックブルー,69.020,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Dark Blue,ダークブルー,69.021,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Titan Dark Blue,,69.022,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Turquoise,ターコイズ,69.023,,blue,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Stone Grey,ストーングレー,69.024,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Light Green,ライトグリーン,69.025,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Green,グリーン,69.026,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Green Blue,グリーンブルー,69.027,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Olive Green,オリーブグリーン,69.028,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Deep Green,ディープグリーン,69.029,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Dark Green,ダークグリーン,69.030,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Grey Sand,グレーサンド,69.031,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Yellow Ochre,イエローオーカー,69.032,,yellow,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Sand Yellow,サンドイエロー,69.033,,yellow,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Brown,ブラウン,69.034,,brown,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Chipping Brown,,69.035,,brown,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Light Grey,ライトグレー,69.036,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Grey,グレー,69.037,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Grey Z,,69.039,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Phantom Grey,,69.040,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Dark Grey Green,ダークグレーグリーン,69.041,,gray,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Pure Black,,69.042,,black,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Yellow Fluorescent,,69.054,,yellow,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Orange Fluorescent,,69.055,,orange,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Magenta Fluorescent,,69.056,,purple,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Green Fluorescent,,69.057,,green,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Gunmetal,ガンメタル,69.058,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Gold,ゴールド,69.059,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Old Gold,オールドゴールド,69.060,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Copper,カッパー,69.061,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Bronze,ブロンズ,69.062,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Steel,スチール,69.063,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Light Steel,ライトスチール,69.064,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Dark Steel,ダークスチール,69.065,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Metallic Red,,69.066,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Metallic Blue,,69.067,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Mecha Color,Metallic Green,,69.068,,metal,no,Catalogo 2026 R02 p82
+Vallejo,Model Color,Cam. Middle Brown,,70.740,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Cam. Black Green,,70.741,,black,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Rose,ダークローズ,70.745,,pink,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Chestnut Brown,チェスナットブラウン,70.746,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Faded Red,フェイデッドレッド,70.747,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Pink,ライトピンク,70.748,,pink,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Purple,ダークパープル,70.749,,purple,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Violet,ライトバイオレット,70.750,,purple,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Black Violet,ブラックバイオレット,70.751,,black,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Infantry Blue,,70.752,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Blue Green,ライトブルーグリーン,70.753,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Continental Blue,,70.754,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Splinter Green,スプリンターグリーン,70.756,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Pacifi c Green,,70.757,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Bright Green,ブライトグリーン,70.758,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,German Tank Crew,ジャーマンタンククルー,70.759,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Mud,ライトマッド,70.760,,other,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Old Wood,オールドウッド,70.761,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Grey Brown,グレーブラウン,70.762,,gray,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Canvas,キャンバス,70.763,,other,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Military Yellow,ミリタリーイエロー,70.764,,yellow,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Desert Tan,デザートタン,70.765,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Cream White,クリームホワイト,70.766,,white,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Desert Brown,デザートブラウン,70.767,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,BC Dark Brown,,70.768,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Mustard Brown,,70.769,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,New Wood,,70.770,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Rust,ダークラスト,70.771,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Violet Grey,バイオレットグレー,70.773,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Lavender Grey,,70.774,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Silver,シルバー,70.790,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Gold,ゴールド,70.791,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Old Gold,オールドゴールド,70.792,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Rich Gold,,70.793,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Red Gold,レッドゴールド,70.794,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Green Gold,グリーンゴールド,70.795,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,White Gold,ホワイトゴールド,70.796,,white,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Copper,カッパー,70.797,,metal,no,Catalogo 2026 R02 p25
+Vallejo,Model Color,Gunmetal Blue,ガンメタルブルー,70.800,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Brass,ブラス,70.801,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Brown Rose,ブラウンローズ,70.803,,pink,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Beige Red,ベージュレッド,70.804,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,German Orange,ジャーマンオレンジ,70.805,,orange,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,German Yellow,ジャーマンイエロー,70.806,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Oxford Blue,,70.807,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Blue Green,ブルーグリーン,70.808,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Royal Blue,ロイヤルブルー,70.809,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Royal Purple,ロイヤルパープル,70.810,,purple,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Blue Violet,ブルーバイオレット,70.811,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Violet Red,バイオレットレッド,70.812,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Burnt Red,バーントレッド,70.814,,red,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Basic Skin Tone,ベーシックスキントーン,70.815,,other,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Luftwaffe Uniform,,70.816,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Scarlet,スカーレット,70.817,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Red Leather,レッドレザー,70.818,,red,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Iraqi Sand,,70.819,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Off-White,オフホワイト,70.820,,white,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Cam. Black Brown,,70.822,,black,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Luftwaffe Green,,70.823,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Orange Ochre,オレンジオーカー,70.824,,orange,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Pale Brown,ペールブラウン,70.825,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Lime Green,ライムグリーン,70.827,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Mahogany Ink,マホガニーインク,70.828,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Amaranth Red,,70.829,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Fern Green,ファーングリーン,70.833,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Salmon Rose,サーモンローズ,70.835,,pink,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,London Grey,,70.836,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Pale Sand,ペールサンド,70.837,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Turquoise,ライトターコイズ,70.840,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Andrea Blue,,70.841,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Cork Brown,コルクブラウン,70.843,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Deep Sky Blue,ディープスカイブルー,70.844,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Sunny Skin Tone,,70.845,,other,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Mahogany Brown,マホガニーブラウン,70.846,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Sand,ダークサンド,70.847,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Bright Orange,ブライトオレンジ,70.851,,orange,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Ochre Brown,オーカーブラウン,70.856,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Ice Yellow,アイスイエロー,70.858,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Black Red,ブラックレッド,70.859,,black,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Med. Flesh Tone,,70.860,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Gloss Black,グロスブラック,70.861,,black,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Black Grey,ブラックグレー,70.862,,black,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Gunmetal,ガンメタル,70.863,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Natural Steel,,70.864,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Oily Steel,,70.865,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Grey Green,グレーグリーン,70.866,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Blue Grey,ダークブルーグレー,70.867,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Sea Green,ダークシーグリーン,70.868,,green,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Basalt Grey,,70.869,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Leather Brown,レザーブラウン,70.871,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Chocolate Brown,,70.872,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,US Field Drab,,70.873,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Tan Earth,タンアース,70.874,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Beige Brown,ベージュブラウン,70.875,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Brown Sand,ブラウンサンド,70.876,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Gold Brown,ゴールドブラウン,70.877,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Old Gold,オールドゴールド,70.878,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Green Brown,グリーンブラウン,70.879,,green,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Khaki Grey,カーキグレー,70.880,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Green Yellow,グリーンイエロー,70.881,,yellow,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Middle Stone,ミドルストーン,70.882,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Silver Grey,シルバーグレー,70.883,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Stone Grey,ストーングレー,70.884,,gray,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Pastel Green,パステルグリーン,70.885,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Green Grey,グリーングレー,70.886,,gray,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,US Olive Drab,,70.887,,green,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Olive Grey,オリーブグレー,70.888,,gray,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Olive Brown,オリーブブラウン,70.889,,green,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Refractive Green,,70.890,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Intermediate Green,インターミディエイトグリーン,70.891,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Yellow Olive,イエローオリーブ,70.892,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,US Dark Green,,70.893,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Cam. Olive Green,,70.894,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Gunship Green,,70.895,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Extra Dark Green,,70.896,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Bronze Green,ブロンズグリーン,70.897,,metal,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Sea Blue,ダークシーブルー,70.898,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Prussian Blue,ダークプルシアンブルー,70.899,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Pastel Blue,パステルブルー,70.901,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Azure,アジュール,70.902,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Blue Grey Pale,ブルーグレーペール,70.905,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Pale Blue,ペールブルー,70.906,,blue,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Pale Grey Blue,ペールグレーブルー,70.907,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Carmine Red,カーミンレッド,70.908,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Vermilion,バーミリオン,70.909,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Orange,ライトオレンジ,70.911,,orange,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Yellow Ochre,イエローオーカー,70.913,,yellow,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Green Ochre,グリーンオーカー,70.914,,green,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Deep Yellow,ディープイエロー,70.915,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Sand Yellow,サンドイエロー,70.916,,yellow,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Beige,ベージュ,70.917,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Ivory,アイボリー,70.918,,other,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Cold White,コールドホワイト,70.919,,white,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,German Uniform,ジャーマンユニフォーム,70.920,,other,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,English Uniform,イングリッシュユニフォーム,70.921,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Uniform Green,ユニフォームグリーン,70.922,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Blue,ブルー,70.925,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Red,レッド,70.926,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Flesh,ダークフレッシュ,70.927,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Flesh,ライトフレッシュ,70.928,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Brown,ライトブラウン,70.929,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Blue,ダークブルー,70.930,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Smoke Ink,スモークインク,70.939,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Saddle Brown,,70.940,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Burnt Umber,,70.941,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Grey Blue,グレーブルー,70.943,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Old Rose,オールドローズ,70.944,,pink,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Magenta,マゼンタ,70.945,,purple,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Red,ダークレッド,70.946,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Dark Vermilion,ダークバーミリオン,70.947,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Golden Yellow,ゴールデンイエロー,70.948,,metal,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Yellow,ライトイエロー,70.949,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Black,ブラック,70.950,,black,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,White,ホワイト,70.951,,white,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Lemon Yellow,レモンイエロー,70.952,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Flat Yellow,フラットイエロー,70.953,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Yellow Green,イエローグリーン,70.954,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Flat Flesh,フラットフレッシュ,70.955,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Clear Orange,クリアオレンジ,70.956,,orange,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Flat Red,フラットレッド,70.957,,red,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Pink,ピンク,70.958,,pink,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Purple,パープル,70.959,,purple,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Violet,バイオレット,70.960,,purple,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Sky Blue,スカイブルー,70.961,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Flat Blue,フラットブルー,70.962,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Field Blue,フィールドブルー,70.964,,blue,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Prussian Blue,プルシアンブルー,70.965,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Turquoise,ターコイズ,70.966,,blue,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Olive Green,オリーブグリーン,70.967,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Flat Green,フラットグリーン,70.968,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Park Green Flat,パークグリーンフラット,70.969,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Deep Green,ディープグリーン,70.970,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Light Green Grey,ライトグリーングレー,70.971,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Light Green Blue,ライトグリーンブルー,70.972,,green,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Green Sky,グリーンスカイ,70.974,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Military Green,ミリタリーグリーン,70.975,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Buff,バフ,70.976,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Desert Yellow,デザートイエロー,70.977,,yellow,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Yellow,ダークイエロー,70.978,,yellow,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Cam. Dark Green,,70.979,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Black Green,ブラックグリーン,70.980,,black,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Orange Brown,オレンジブラウン,70.981,,orange,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Cavalry Brown,,70.982,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Flat Earth,フラットアース,70.983,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Flat Brown,フラットブラウン,70.984,,brown,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Hull Red,,70.985,,red,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Deck Tan,デッキタン,70.986,,brown,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Khaki,カーキ,70.988,,green,no,Catalogo 2026 R02 p12
+Vallejo,Model Color,Sky Grey,スカイグレー,70.989,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Light Grey,ライトグレー,70.990,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Sea Grey,ダークシーグレー,70.991,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Neutral Grey,ニュートラルグレー,70.992,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,White Grey,ホワイトグレー,70.993,,white,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Dark Grey,ダークグレー,70.994,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,German Grey,ジャーマングレー,70.995,,gray,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Gold,ゴールド,70.996,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Silver,シルバー,70.997,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Bronze,ブロンズ,70.998,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Color,Copper,カッパー,70.999,,metal,no,Catalogo 2026 R02 p13
+Vallejo,Model Air,White,ホワイト,71.001,,white,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Red RLM23,,71.003,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Blue,ブルー,71.004,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Grey Blue,グレーブルー,71.005,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Olive Green,オリーブグリーン,71.007,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Pale Blue,ペールブルー,71.008,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Eau de Nil “D.E.Green”,,71.009,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Interior Green,,71.010,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Green RLM83,,71.011,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Green,ダークグリーン,71.012,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Yellow Olive,イエローオリーブ,71.013,,yellow,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Gunship Green,,71.014,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Green RLM71,,71.015,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,USAF Olive Drab,,71.016,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Russian Green 4BO,,71.017,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Black Green,ブラックグリーン,71.018,,black,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Camouf. Dark Green,,71.019,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Green Brown,グリーンブラウン,71.020,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Black Green RLM70,,71.021,,black,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Green RLM82,,71.022,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Hemp,ヘンプ,71.023,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Khaki Brown,カーキブラウン,71.024,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Yellow,ダークイエロー,71.025,,yellow,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,USA Flat Brown,,71.026,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Brown,ライトブラウン,71.027,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Sand Yellow,サンドイエロー,71.028,,yellow,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Earth,ダークアース,71.029,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Brown Green,ブラウングリーン,71.030,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Middle Stone,ミドルストーン,71.031,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Golden Brown,ゴールデンブラウン,71.032,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Yellow Ochre,イエローオーカー,71.033,,yellow,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Sand Brown,サンドブラウン,71.034,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Camouf. Pale Brown,,71.035,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Mahogany,マホガニー,71.036,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Mud Brown,マッドブラウン,71.037,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Hull Red,,71.039,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Burnt Umber,,71.040,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Armour Brown,,71.041,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Brown RLM61,,71.042,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,US Olive Drab,,71.043,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Grey RLM02,,71.044,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Cement Grey,,71.045,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Pale Blue Grey,ペールブルーグレー,71.046,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Grey,グレー,71.047,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Engine Gray,,71.048,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Sea Grey,シーグレー,71.049,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Gray,ライトグレー,71.050,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Neutral Gray,ニュートラルグレー,71.051,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Anthracite Grey,,71.052,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Sea Gray,ダークシーグレー,71.053,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Grey Blue,ダークグレーブルー,71.054,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Black Grey RLM66,,71.055,,black,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Panzer Dark Grey,,71.056,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Black,ブラック,71.057,,black,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Aluminium (Metallic),,71.062,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Silver RLM01 (Metal.),,71.063,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Chrome (Metallic),,71.064,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Steel (Metallic),,71.065,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Gold (Metallic),,71.066,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Bright Brass (Metal.),,71.067,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Copper (Metallic),,71.068,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Rust (Metallic),,71.069,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Signal Red (Metallic),,71.070,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Arctic Blue (Metallic),,71.071,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Gunmetal (Metallic),,71.072,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Black (Metallic),,71.073,,black,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Beige,ベージュ,71.074,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Ivory,アイボリー,71.075,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Skin Tone,スキントーン,71.076,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Wood,ウッド,71.077,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Yellow RLM04,,71.078,,yellow,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Tan Earth,タンアース,71.079,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Rust,ラスト,71.080,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Ochre,オーカー,71.081,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Fluorescent Red,,71.082,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Orange,オレンジ,71.083,,orange,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Fire Red,ファイアレッド,71.084,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Ferrari Red,,71.085,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Red,ライトレッド,71.086,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Steel Blue,スチールブルー,71.087,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Sea Blue,ライトシーブルー,71.089,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Deep Sky,ディープスカイ,71.090,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Signal Blue,,71.091,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,NATO Green,,71.093,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Green Zinc Chromate,,71.094,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Pale Green,ペールグリーン,71.095,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Olive Grey,オリーブグレー,71.096,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Blue RLM78,,71.101,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Red,レッド,71.102,,red,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Grey Blue RLM84,,71.103,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Green RLM62,,71.104,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Brown RLM26,,71.105,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Ivory RLM05,,71.106,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,US Interior Yellow,,71.107,,yellow,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,UK Azure Blue,,71.108,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Faded P.R.U. Blue,,71.109,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Gray,ダークグレー,71.110,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,USAF Light Blue,,71.111,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Sand,サンド,71.112,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,IDF Blue,,71.113,,blue,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Blue Grey,ブルーグレー,71.115,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Camouf. Grey Green,,71.116,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Camoufl age Brown,,71.117,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Camoufl age Grey,,71.118,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,White Grey,ホワイトグレー,71.119,,white,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Ghost Gray,ダークゴーストグレー,71.120,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Gull Gray,,71.121,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,US Desert Armour,,71.122,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dark Grey RLM42,,71.123,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,USAF Green,,71.124,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,USAF Brown,,71.125,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,IDF/IAF Green,,71.126,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Gray Violet,グレーバイオレット,71.128,,gray,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Light Rust,ライトラスト,71.129,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Orange Rust,オレンジラスト,71.130,,orange,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Concrete,コンクリート,71.131,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Aged White,,71.132,,white,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,Dirt,,71.133,,other,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,IJA Midouri Green,,71.134,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,IJA Chrome Yellow,,71.135,,metal,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,IJA Earth Brown,,71.136,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,US Light Green,,71.137,,green,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,US Sand,,71.138,,brown,no,Catalogo 2026 R02 p28
+Vallejo,Model Air,US Field Drab,,71.139,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Desert Sand,,71.140,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IDF Sand Grey,,71.141,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IDF Sinai Grey,,71.142,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,UK Light Stone,,71.143,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,USAAF Aircraft,,71.185,,other,no,Catalogo 2026 R02 p32
+Vallejo,Model Air,Sand Beige,サンドベージュ,71.244,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Loam Beige,,71.245,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Yellow Brown,イエローブラウン,71.246,,yellow,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Light Olive,ライトオリーブ,71.247,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Brown Grey,ブラウングレー,71.248,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,NATO Brown,,71.249,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Bronze Green,ブロンズグリーン,71.250,,metal,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,NATO Black,,71.251,,black,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Light Blue RLM65,,71.255,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Green RLM73,,71.256,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Light Blue RLM76,,71.257,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Grey Green RLM74,,71.258,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Grey Violet RLM75,,71.259,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Light Grey RLM63,,71.260,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Airbrush,,71.262,,other,no,Catalogo 2026 R02 p13
+Vallejo,Model Air,Green RLM72,,71.263,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Brown Violet RLM81,,71.264,,purple,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Olive Green RLM80,,71.265,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Dark Blue RLM24,,71.266,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Light Green RLM25,,71.267,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,German Grey,ジャーマングレー,71.268,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Red,レッド,71.269,,red,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Off-White,オフホワイト,71.270,,white,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,German Red Brown,ジャーマンレッドブラウン,71.271,,red,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,German Yellow Brown,ジャーマンイエローブラウン,71.272,,yellow,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Ocean Gray,,71.273,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Aggressor Gray,,71.274,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,USAF Light Gray,,71.276,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Dark Gull Gray,,71.277,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Sand Yellow RLM79,,71.278,,yellow,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Insignia White,,71.279,,white,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Camoufl age Gray,,71.280,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,3B Russian Green,,71.281,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,6K Russian Brown,,71.282,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,7K Russian Tan,,71.283,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,UK Light Mud,,71.284,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJA Dark Green,,71.285,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJA Olive Green,,71.286,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJA Khaki Brown,,71.287,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,UK BSC Portl. Stone,,71.288,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Dark Green,,71.289,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Earth Brown,,71.290,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Earth Yellow,,71.291,,yellow,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Loam,,71.292,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Earth Red,,71.293,,red,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,US Forest Green,,71.294,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,USN Sea Blue,,71.295,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,USAAF Light Gray,,71.296,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,JGSD Brown 3606,,71.297,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,M495 Light Gray,,71.298,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Intermediate Blue,インターミディエイトブルー,71.299,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Glossy Sea Blue,,71.300,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,AMT-4 Cam. Green,,71.301,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Sky Type S,,71.302,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,A-24M Cam. Green,,71.303,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,AMT-11 Blue Grey,,71.304,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Interior Grey Green,,71.305,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Sky Blue,スカイブルー,71.306,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,AMT-12 Dark Grey,,71.308,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Dark Slate Grey,,71.309,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJN Deep Dark Green,,71.310,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJN Ash Grey,,71.311,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Dark Mediterr. Blue,,71.313,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Seaplane Gray,,71.314,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Tire Black,,71.315,,black,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,N. Dark Olive Drab,,71.316,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,AII SV. Gol Light Blue,,71.317,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,AMT-7 Greyish Blue,,71.318,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,A-28M Greyish Blue,,71.319,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,AMT-1 Light Grey. Brown,,71.320,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJA Light Grey Green,,71.321,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJN Black Green,,71.322,,black,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,BS Dark Earth,,71.323,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,BS Dark Green,,71.324,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJN Dark Black Green,,71.325,,black,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IJA Grey Green,,71.326,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,IAF Sand,,71.327,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Light Blue,ライトブルー,71.328,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Green,グリーン,71.329,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Cockpit Emer. G.“Faded”,,71.331,,other,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Underside Blue “Faded”,,71.332,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Blue,,71.333,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Flanker Light Blue,,71.334,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Flanker Light Gray,,71.335,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,A-14 Steel Grey,,71.336,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Flanker Blue,,71.337,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Grey Blue,,71.338,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Grey N.3,,71.339,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Grey Green,グレーグリーン,71.340,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Green Grey,グリーングレー,71.341,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Light Blue,,71.342,,blue,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Grey N.7,,71.343,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,R. AF Grey Protec. Coat,,71.344,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Grey N.8,,71.345,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Grey N.4,,71.346,,gray,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,Russian AF Dark Green,,71.347,,green,no,Catalogo 2026 R02 p29
+Vallejo,Model Air,USAF Tan,,71.348,,brown,no,Catalogo 2026 R02 p29
+Vallejo,Game Color,Dead White,デッドホワイト,72.001,,white,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Pale Flesh,ペールフレッシュ,72.003,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Elf Skin Tone,エルフスキントーン,72.004,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Moon Yellow,ムーンイエロー,72.005,,yellow,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Sun Yellow,サンイエロー,72.006,,yellow,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Gold Yellow,ゴールドイエロー,72.007,,metal,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Orange Fire,オレンジファイア,72.008,,orange,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Hot Orange,,72.009,,orange,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Bloody Red,ブラッディレッド,72.010,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Gory Red,,72.011,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Scarlet Red,スカーレットレッド,72.012,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Squid Pink,スクイッドピンク,72.013,,pink,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Warlord Purple,ウォーロードパープル,72.014,,purple,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Hexed Lichen,,72.015,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Royal Purple,ロイヤルパープル,72.016,,purple,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Night Blue,ナイトブルー,72.019,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Imperial Blue,インペリアルブルー,72.020,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Magic Blue,マジックブルー,72.021,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Ultramarine Blue,,72.022,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Electric Blue,エレクトリックブルー,72.023,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Turquoise,ターコイズ,72.024,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Foul Green,,72.025,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Jade Green,ジェイドグリーン,72.026,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Scurvy Green,スカービーグリーン,72.027,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Dark Green,ダークグリーン,72.028,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Sick Green,,72.029,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Goblin Green,,72.030,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Camoufl age Green,,72.031,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Scorpy Green,スコーピーグリーン,72.032,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Bone White,ボーンホワイト,72.034,,white,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Dead Flesh,デッドフレッシュ,72.035,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Bronze Brown,ブロンズブラウン,72.036,,metal,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Scrofulous Brown,,72.038,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Plague Brown,,72.039,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Leather Brown,レザーブラウン,72.040,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Parasite Brown,パラサイトブラウン,72.042,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Beasty Brown,ビースティブラウン,72.043,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Dark Flesh Tone,ダークフレッシュトーン,72.044,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Charred Brown,チャードブラウン,72.045,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Wolf Grey,ウルフグレー,72.047,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Sombre Grey,ソンブルグレー,72.048,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Stonewall Grey,ストーンウォールグレー,72.049,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Neutral Grey,ニュートラルグレー,72.050,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Black,ブラック,72.051,,black,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Silver,シルバー,72.052,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Chainmail,チェインメイル,72.053,,other,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Dark Gunmetal,ダークガンメタル,72.054,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Polished Gold,,72.055,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Glorious Gold,,72.056,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Bright Bronze,ブライトブロンズ,72.057,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Brassy Brass,,72.058,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Hammered Copper,,72.059,,metal,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Tinny Tin,,72.060,,other,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Khaki,カーキ,72.061,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Earth,アース,72.062,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Desert Yellow,デザートイエロー,72.063,,yellow,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Tan,タン,72.066,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Cayman Green,,72.067,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Barbarian Skin,バーバリアンスキン,72.071,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Alien Purple,エイリアンパープル,72.076,,purple,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,White,ホワイト,72.082,,white,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Magenta,マゼンタ,72.083,,purple,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Dark Turquoise,ダークターコイズ,72.084,,blue,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Yellow,イエロー,72.085,,yellow,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Red,レッド,72.086,,red,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Violet,バイオレット,72.087,,purple,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Blue,ブルー,72.088,,blue,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Green,グリーン,72.089,,green,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Black Green,ブラックグリーン,72.090,,black,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Sepia,,72.091,,brown,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Skin,スキン,72.093,,other,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Black,ブラック,72.094,,black,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Glacier Blue,,72.095,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Verdigris,,72.096,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Elfi c Flesh,,72.098,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Skin Tone,スキントーン,72.099,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Rosy Flesh,ロージーフレッシュ,72.100,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Off-White,オフホワイト,72.101,,white,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Steel Grey,スチールグレー,72.102,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Fluorescent Yellow,,72.103,,yellow,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Fluorescent Green,,72.104,,green,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Scarlet Blood,,72.106,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Athena Skin,アテナスキン,72.107,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Succubus Skin,,72.108,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Toxic Yellow,トキシックイエロー,72.109,,yellow,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Nocturnal Red,ノクターナルレッド,72.111,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Evil Red,,72.112,,red,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Deep Magenta,ディープマゼンタ,72.113,,purple,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Lustful Purple,ラストフルパープル,72.114,,purple,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Grunge Brown,グランジブラウン,72.115,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Midnight Purple,ミッドナイトパープル,72.116,,purple,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Elfi c Blue,,72.117,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Sunrise Blue,サンライズブルー,72.118,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Aquamarine,アクアマリン,72.119,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Abyssal Turquoise,アビサルターコイズ,72.120,,blue,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Ghost Green,ゴーストグリーン,72.121,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Bile Green,バイルグリーン,72.122,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Angel Green,エンジェルグリーン,72.123,,green,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Gorgon Brown,,72.124,,brown,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Dirty Grey,,72.145,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Warm Grey,,72.148,,gray,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Charcoal,チャコール,72.155,,other,no,Catalogo 2026 R02 p52
+Vallejo,Game Color,Fluorescent Orange,,72.156,,orange,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Fluorescent Red,,72.157,,red,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Fluorescent Magenta,,72.158,,purple,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Fluorescent Violet,,72.159,,purple,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Fluorescent Blue,,72.160,,blue,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Fluorescent Cold Green,,72.161,,green,no,Catalogo 2026 R02 p53
+Vallejo,Game Color,Tones,,72.187,,other,no,Catalogo 2026 R02 p55
+Vallejo,Game Color,and Metal,,72.189,,metal,no,Catalogo 2026 R02 p56
+Vallejo,Game Color,Color Inks,,72.296,,other,no,Catalogo 2026 R02 p55
+Vallejo,Game Color,Templar White,,72.401,,white,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Dwarf Skin,ドワーフスキン,72.402,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Imperial Yellow,インペリアルイエロー,72.403,,yellow,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Nuclear Yellow,,72.404,,yellow,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Martian Orange,,72.405,,orange,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Plasma Red,,72.406,,red,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Velvet Red,,72.407,,red,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Cardinal Purple,,72.408,,purple,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Deep Purple,ディープパープル,72.409,,purple,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Gloomy Violet,,72.410,,purple,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Mystic Blue,,72.411,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Storm Blue,,72.412,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Omega Blue,,72.413,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Caribbean Turquoise,,72.414,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Orc Skin,オークスキン,72.415,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Troll Green,,72.416,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Snake Green,,72.417,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Lizard Green,,72.418,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Plague Green,,72.419,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Wasteland Brown,,72.420,,brown,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Copper Brown,カッパーブラウン,72.421,,metal,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Space Grey,,72.422,,gray,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Black Lotus,,72.423,,black,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Mummy White,,72.449,,white,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Bag of Bones,バッグボーンズ,72.450,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Khaki Drill,,72.451,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Rotten Flesh,,72.452,,brown,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Military Yellow,ミリタリーイエロー,72.453,,yellow,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Desert Ochre,デザートオーカー,72.454,,brown,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Chameleon Orange,,72.455,,orange,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Wicked Purple,,72.456,,purple,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Fairy Skin,フェアリースキン,72.457,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Demonic Skin,デモニックスキン,72.458,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Fluid Pink,,72.459,,pink,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Twilight Rose,,72.460,,pink,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Vampiric Purple,,72.461,,purple,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Starship Steel,,72.462,,metal,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Iceberg Grey,,72.463,,gray,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Wagram Blue,,72.464,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Forest Green,,72.465,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Armor Green,,72.466,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Camoufl age Green,,72.467,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Commando Green,,72.468,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Landser Grey,,72.469,,gray,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Zombie Flesh,,72.470,,brown,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Tanned Skin,,72.471,,brown,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Mahogany,マホガニー,72.472,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Battledress Brown,,72.473,,brown,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Willow Bark,ウィローバーク,72.474,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Muddy Ground,マッディグラウンド,72.475,,other,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Greasy Black,,72.476,,black,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Dreadnought Yellow,,72.477,,yellow,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Phoenix Orange,,72.478,,orange,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Legacy Blue,,72.480,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Heretic Turquoise,,72.481,,blue,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Monastic Green,,72.482,,green,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Viking Grey,,72.483,,gray,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Hospitallier Black,,72.484,,black,no,Catalogo 2026 R02 p68
+Vallejo,Game Color,Vomit,,72.600,,other,no,Catalogo 2026 R02 p52
+Vallejo,Metal Color,Aluminium,アルミニウム,77.701,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Duraluminium,,77.702,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Dark Aluminium,ダークアルミニウム,77.703,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Pale Burnt Metal,ペールバーントメタル,77.704,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,White Aluminium,ホワイトアルミニウム,77.706,,white,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Chrome,クローム,77.707,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Copper,カッパー,77.710,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Magnesium,マグネシウム,77.711,,other,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Steel,スチール,77.712,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Dull Aluminium,,77.717,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Gunmetal Grey,ガンメタルグレー,77.720,,gray,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Burnt Iron,バーントアイアン,77.721,,other,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Exhaust Manifold,,77.723,,other,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Silver,シルバー,77.724,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Metal Color,Gold,ゴールド,77.725,,metal,no,Catalogo 2026 R02 p44
+Vallejo,Game Air,Dead White,デッドホワイト,76.001,,white,no,CC298 Game Air R02
+Vallejo,Game Air,Bone White,ボーンホワイト,76.034,,white,no,CC298 Game Air R02
+Vallejo,Game Air,Pale Flesh,ペールフレッシュ,76.003,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Rosy Flesh,ロージーフレッシュ,76.100,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Athena Skin,アテナスキン,76.107,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Elf Skin Tone,エルフスキントーン,76.004,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Barbarian Skin,バーバリアンスキン,76.071,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Toxic Yellow,トキシックイエロー,76.109,,yellow,no,CC298 Game Air R02
+Vallejo,Game Air,Moon Yellow,ムーンイエロー,76.005,,yellow,no,CC298 Game Air R02
+Vallejo,Game Air,Sun Yellow,サンイエロー,76.006,,yellow,no,CC298 Game Air R02
+Vallejo,Game Air,Gold Yellow,ゴールドイエロー,76.007,,yellow,no,CC298 Game Air R02
+Vallejo,Game Air,Orange Fire,オレンジファイア,76.008,,orange,no,CC298 Game Air R02
+Vallejo,Game Air,Bloody Red,ブラッディレッド,76.010,,red,no,CC298 Game Air R02
+Vallejo,Game Air,Scarlet Red,スカーレットレッド,76.012,,red,no,CC298 Game Air R02
+Vallejo,Game Air,Nocturnal Red,ノクターナルレッド,76.111,,red,no,CC298 Game Air R02
+Vallejo,Game Air,Squid Pink,スクイッドピンク,76.013,,pink,no,CC298 Game Air R02
+Vallejo,Game Air,Warlord Purple,ウォーロードパープル,76.014,,purple,no,CC298 Game Air R02
+Vallejo,Game Air,Lustful Purple,ラストフルパープル,76.114,,purple,no,CC298 Game Air R02
+Vallejo,Game Air,Alien Purple,エイリアンパープル,76.076,,purple,no,CC298 Game Air R02
+Vallejo,Game Air,Royal Purple,ロイヤルパープル,76.016,,purple,no,CC298 Game Air R02
+Vallejo,Game Air,Midnight Purple,ミッドナイトパープル,76.116,,purple,no,CC298 Game Air R02
+Vallejo,Game Air,Ultramarine Blue,,76.022,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Night Blue,ナイトブルー,76.019,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Sunrise Blue,サンライズブルー,76.118,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Electric Blue,エレクトリックブルー,76.023,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Magic Blue,マジックブルー,76.021,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Imperial Blue,インペリアルブルー,76.020,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Turquoise,ターコイズ,76.024,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Abyssal Turquoise,アビサルターコイズ,76.120,,blue,no,CC298 Game Air R02
+Vallejo,Game Air,Ghost Green,ゴーストグリーン,76.121,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Jade Green,ジェイドグリーン,76.026,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Scurvy Green,スカービーグリーン,76.027,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Bile Green,バイルグリーン,76.122,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Scorpy Green,スコーピーグリーン,76.032,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Angel Green,エンジェルグリーン,76.123,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Dark Green,ダークグリーン,76.028,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Dead Flesh,デッドフレッシュ,76.035,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Camouflage Green,カモフラージュグリーン,76.031,,green,no,CC298 Game Air R02
+Vallejo,Game Air,Desert Yellow,デザートイエロー,76.063,,yellow,no,CC298 Game Air R02
+Vallejo,Game Air,Earth,アース,76.062,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Bronze Brown,ブロンズブラウン,76.036,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Leather Brown,レザーブラウン,76.040,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Beasty Brown,ビースティブラウン,76.043,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Parasite Brown,パラサイトブラウン,76.042,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Grunge Brown,グランジブラウン,76.115,,brown,no,CC298 Game Air R02
+Vallejo,Game Air,Charred Brown,チャードブラウン,76.045,,red,no,CC298 Game Air R02
+Vallejo,Game Air,Wolf Grey,ウルフグレー,76.047,,gray,no,CC298 Game Air R02
+Vallejo,Game Air,Sombre Grey,ソンブルグレー,76.048,,gray,no,CC298 Game Air R02
+Vallejo,Game Air,Stonewall Grey,ストーンウォールグレー,76.049,,gray,no,CC298 Game Air R02
+Vallejo,Game Air,Neutral Grey,ニュートラルグレー,76.050,,gray,no,CC298 Game Air R02
+Vallejo,Game Air,Black,ブラック,76.051,,black,no,CC298 Game Air R02
