@@ -196,7 +196,14 @@
   </script>
   <script src="storage.supabase.js"></script>
 -->
-<script src="storage.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  window.SUPABASE_CONFIG = {
+    url: "https://jrbnoujdeecotybqmxiq.supabase.co",   // 手順1のProject URL
+    anonKey: "sb_publishable_QORpqTLZzfu4bCa0-OsLqw_V_FoOPKq"
+  };
+</script>
+<script src="storage.supabase.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
