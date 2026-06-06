@@ -41,7 +41,7 @@
 type ColorKey =
   | "red" | "orange" | "yellow" | "green" | "blue" | "purple"
   | "pink" | "brown" | "white" | "gray" | "black"
-  | "metal" | "clear" | "primer" | "other";
+  | "metal" | "clear" | "primer" | "topcoat" | "other";
 
 interface RecipeItem {
   name: string;   // 材料の塗料名（自由入力。既存塗料名を書いてもよい）
@@ -113,6 +113,7 @@ interface State {
 
 ### 5.2 階層（メーカー → シリーズ）
 - フィルタは2段階。メーカーを選ぶとシリーズ候補がそのメーカーのものに絞られる。
+- シリーズフィルタはチップ形式で複数選択できる（選んだシリーズのいずれかに一致＝OR条件。未選択=すべて）。
 - シリーズ未設定は「（指定なし）」として扱い、選択肢にも出す。
 - 一覧はメーカーで大グループ、シリーズで小グループに分けて表示する（折りたたみ対応）。
 

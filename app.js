@@ -20,6 +20,7 @@ const COLOR_TYPES = [
   { key: "metal",  label: "メタリック",    color: "#c0c4cc", cls: "metal" },
   { key: "clear",  label: "クリア（透明）", color: "#9fd8cf", cls: "clear" },
   { key: "primer", label: "サフ",         color: "#9a9a9a" },
+  { key: "topcoat",label: "トップコート",  color: "#cfd8e0", cls: "clear" },
   { key: "other",  label: "その他",       color: "#5dd5c4" },
 ];
 const colorMap = Object.fromEntries(COLOR_TYPES.map(c => [c.key, c]));
@@ -29,6 +30,7 @@ const NONE = "__NONE__"; // シリーズ「指定なし」を表すトークン
 let state = { paints: [], pinnedMakers: [] };
 let currentView = "all";       // all | owned | mix
 let collapsed = new Set();      // 折りたたみ中のメーカーグループ
+let selectedSeries = new Set(); // 選択中のシリーズ（複数可）。空=すべて
 let formKind = "product";       // フォームの種別
 let html5qr = null;
 let scanMode = "search"; // "search"=既存検索/新規登録, "form"=編集中のバーコード欄に入れる
@@ -80,7 +82,6 @@ function bindEvents() {
   // フィルタ
   $("f-search").addEventListener("input", render);
   $("f-maker").addEventListener("change", () => { rebuildSeriesOptions(); render(); });
-  $("f-series").addEventListener("change", render);
   $("f-color").addEventListener("change", render);
   // ピン
   $("pin-toggle").addEventListener("click", togglePinCurrent);
@@ -122,18 +123,31 @@ function seriesInScope(makerFilter) {
   return [...set];
 }
 function rebuildSeriesOptions() {
-  const fSeries = $("f-series");
-  const cur = fSeries.value;
+  const wrap = $("f-series-chips");
   const makerFilter = $("f-maker").value;
-  const list = seriesInScope(makerFilter).sort((a, b) => a.localeCompare(b, "ja"));
-  let html = '<option value="">すべて</option>';
-  list.forEach(s => {
-    if (s === "") html += `<option value="${NONE}">（指定なし）</option>`;
-    else html += `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`;
+  const list = seriesInScope(makerFilter).sort((a, b) => {
+    if (a === "") return 1; if (b === "") return -1;
+    return a.localeCompare(b, "ja");
   });
-  fSeries.innerHTML = html;
-  // 選択維持（候補に残っていれば）
-  if ([...fSeries.options].some(o => o.value === cur)) fSeries.value = cur;
+  // スコープ外になった選択は外す
+  const scope = new Set(list.map(s => s === "" ? NONE : s));
+  [...selectedSeries].forEach(v => { if (!scope.has(v)) selectedSeries.delete(v); });
+
+  const chip = (val, label) => {
+    const on = selectedSeries.has(val);
+    return `<button type="button" class="schip ${on ? "on" : ""}" data-series="${escapeHtml(val)}">${escapeHtml(label)}</button>`;
+  };
+  let html = `<button type="button" class="schip allchip ${selectedSeries.size === 0 ? "on" : ""}" data-series="__ALL__">すべて</button>`;
+  list.forEach(s => { html += (s === "") ? chip(NONE, "（指定なし）") : chip(s, s); });
+  wrap.innerHTML = html;
+
+  wrap.querySelectorAll(".schip").forEach(b => b.addEventListener("click", () => {
+    const v = b.dataset.series;
+    if (v === "__ALL__") { selectedSeries.clear(); }
+    else if (selectedSeries.has(v)) { selectedSeries.delete(v); }
+    else { selectedSeries.add(v); }
+    render();
+  }));
 }
 
 /* ============ メーカー選択肢・datalist ============ */
@@ -197,7 +211,6 @@ function renderPinbar() {
 function getFiltered() {
   const q = $("f-search").value.trim().toLowerCase();
   const fm = $("f-maker").value;
-  const fs = $("f-series").value;
   const fc = $("f-color").value;
   return state.paints.filter(p => {
     if (currentView === "owned" && !((Number(p.qty) || 0) >= 1)) return false;
@@ -208,8 +221,11 @@ function getFiltered() {
       if (!hay.includes(q)) return false;
     }
     if (fm && (p.maker || "") !== fm) return false;
-    if (fs === NONE && (p.series || "") !== "") return false;
-    if (fs && fs !== NONE && (p.series || "") !== fs) return false;
+    // シリーズ複数選択：いずれかに一致すればOK（空=すべて通す）
+    if (selectedSeries.size > 0) {
+      const key = (p.series || "") === "" ? NONE : p.series;
+      if (!selectedSeries.has(key)) return false;
+    }
     if (fc && p.colorKey !== fc) return false;
     return true;
   });
