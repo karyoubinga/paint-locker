@@ -112,6 +112,9 @@ function bindEvents() {
   // CSV取込
   $("import-btn").addEventListener("click", () => $("import-file").click());
   $("import-file").addEventListener("change", onImportFile);
+  // JSON復元（バックアップ）
+  $("import-json-btn").addEventListener("click", () => $("import-json-file").click());
+  $("import-json-file").addEventListener("change", onImportJsonFile);
   // 一覧（委譲）
   listEl.addEventListener("click", onListClick);
 }
@@ -674,6 +677,115 @@ function exportJson() {
   a.download = `paint-backup-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+/* ============ JSON復元（バックアップ取込） ============ */
+// 取り込んだ塗料を、現スキーマの完全な形に整える（古い/壊れたバックアップ対策）。
+function normalizePaint(p) {
+  p = p || {};
+  const colorKeys = new Set(COLOR_TYPES.map(c => c.key));
+  const recipe = Array.isArray(p.recipe) ? p.recipe.map(r => ({
+    name: String((r && r.name) || ""),
+    parts: String((r && r.parts) || ""),
+    note: String((r && r.note) || ""),
+    refId: String((r && r.refId) || ""),
+  })) : [];
+  return {
+    id: p.id || uid(),
+    kind: p.kind === "mix" ? "mix" : "product",
+    name: String(p.name || ""),
+    nameJa: String(p.nameJa || ""),
+    maker: String(p.maker || ""),
+    series: String(p.series || ""),
+    code: String(p.code || ""),
+    colorKey: colorKeys.has(p.colorKey) ? p.colorKey : "other",
+    hex: /^#[0-9a-fA-F]{6}$/.test(p.hex || "") ? p.hex : "",
+    qty: Math.max(0, Number(p.qty) || 0),
+    wanted: !!p.wanted,
+    remaining: clampRem(p.remaining),
+    barcode: String(p.barcode || ""),
+    note: String(p.note || ""),
+    recipe,
+    recipeNote: String(p.recipeNote || ""),
+    batchMl: Math.max(0, Number(p.batchMl) || 0),
+    createdAt: Number(p.createdAt) || now(),
+    updatedAt: Number(p.updatedAt) || now(),
+  };
+}
+
+function onImportJsonFile(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => { importJsonText(String(reader.result)); e.target.value = ""; };
+  reader.onerror = () => { alert("ファイルの読み込みに失敗しました。"); e.target.value = ""; };
+  reader.readAsText(file, "utf-8");
+}
+
+async function importJsonText(text) {
+  let data;
+  try { data = JSON.parse(text); }
+  catch { alert("JSONとして読み込めませんでした。ファイルが壊れていないかご確認ください。"); return; }
+
+  // 配列そのまま、または {paints:[...]} の両方を受け付ける
+  const rawPaints = Array.isArray(data) ? data
+    : (data && Array.isArray(data.paints) ? data.paints : null);
+  if (!rawPaints) {
+    alert("塗料データ(paints)が見つかりませんでした。\nこのアプリのバックアップJSONをお選びください。");
+    return;
+  }
+  const incoming = rawPaints.map(normalizePaint).filter(p => p.name);
+  if (incoming.length === 0) { alert("取り込める塗料がありませんでした。"); return; }
+  const rawPins = (data && Array.isArray(data.pinnedMakers)) ? data.pinnedMakers.map(String) : [];
+
+  if (!confirm(`バックアップを読み込みました（塗料 ${incoming.length} 件）。\n復元を続けますか？`)) return;
+
+  // OK＝置き換え / キャンセル＝マージ
+  const replace = confirm(
+    "復元の方法を選んでください。\n\n" +
+    `「OK」＝置き換え：今のデータ（${state.paints.length} 件）を消して、バックアップで置き換えます。\n\n` +
+    "「キャンセル」＝マージ：今のデータを残し、重複しないものだけ追加します。"
+  );
+
+  if (replace) {
+    state.paints = incoming;
+    state.pinnedMakers = rawPins;
+    await persist();
+    render();
+    alert(`置き換えで復元しました：塗料 ${incoming.length} 件。`);
+    return;
+  }
+
+  // ===== マージ =====
+  // 重複判定：maker + 種別 + (code が空なら 日本語名/名前)
+  const keyOf = p => (p.maker || "") + "|" + p.kind + "|" + (p.code ? "c:" + p.code : "n:" + (p.nameJa || p.name));
+  const keyToId = new Map();
+  state.paints.forEach(p => keyToId.set(keyOf(p), p.id));
+
+  const idMap = {};   // バックアップ内の旧ID → 実際に使うID（新規 or 既存）
+  const toAdd = [];
+  let skipped = 0;
+  incoming.forEach(p => {
+    const k = keyOf(p);
+    if (keyToId.has(k)) { idMap[p.id] = keyToId.get(k); skipped++; return; }
+    const newId = uid();
+    idMap[p.id] = newId;
+    keyToId.set(k, newId);
+    toAdd.push({ ...p, id: newId });
+  });
+  // 配合の材料参照(refId)を、付け替え後のIDにつなぎ直す
+  toAdd.forEach(p => {
+    if (p.recipe && p.recipe.length) {
+      p.recipe = p.recipe.map(r => ({ ...r, refId: (r.refId && idMap[r.refId]) ? idMap[r.refId] : "" }));
+    }
+  });
+  state.paints.push(...toAdd);
+  // ピン留めメーカーもマージ（重複排除）
+  rawPins.forEach(m => { if (m && !state.pinnedMakers.includes(m)) state.pinnedMakers.push(m); });
+
+  await persist();
+  render();
+  alert(`マージで復元しました：${toAdd.length} 件を追加（重複スキップ ${skipped} 件）。`);
 }
 
 /* ============ CSV取込 ============ */
