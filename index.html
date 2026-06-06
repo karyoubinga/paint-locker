@@ -160,11 +160,22 @@
       <label class="fl">配合（材料・比率・メモ）</label>
       <div id="recipe-rows"></div>
       <button type="button" class="btn btn-ghost small" id="recipe-add">＋ 材料を追加</button>
+
+      <div class="field" style="margin-top:12px;">
+        <label class="fl">総量（ml・任意）</label>
+        <input id="i-batchml" class="num" type="number" min="0" step="1" inputmode="decimal" placeholder="例：30">
+        <div class="hint">作りたい量を入れると、下に各材料の必要量(ml)を試算します。</div>
+      </div>
+      <div id="recipe-calc" class="recipe-calc"></div>
+
       <div class="field" style="margin-top:10px;">
         <label class="fl">配合の補足メモ</label>
         <textarea id="i-recipenote" rows="2" placeholder="例：明るめにしたい時は白を1割増し"></textarea>
       </div>
     </div>
+
+    <!-- 材料名の補完候補（既存塗料） -->
+    <datalist id="material-list"></datalist>
 
     <div class="field">
       <label class="fl">メモ（任意）</label>

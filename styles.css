@@ -204,3 +204,19 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);}
   .card{gap:10px;padding:11px;}
   .recipe-row{grid-template-columns:1fr 56px 1fr 28px;}
 }
+
+/* ===== 調色レベル2：必要量(ml)の試算表示 ===== */
+.recipe-block .hint{font-size:11px;color:var(--muted);margin-top:4px;}
+.recipe-calc{margin-top:8px;}
+.recipe-calc .calc-title{font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:4px;}
+.recipe-calc .calc-list{list-style:none;margin:0;padding:0;}
+.recipe-calc .calc-list li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+  font-size:13px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg2);margin-bottom:4px;}
+.recipe-calc .calc-list li b{font-family:"Space Mono",monospace;color:var(--accent);white-space:nowrap;}
+.recipe-calc .calc-list li.calc-skip{color:var(--muted);}
+.recipe-calc .calc-list li.calc-skip span{font-size:11px;}
+.recipe-calc .calc-hint{font-size:11px;color:var(--muted);margin-top:2px;}
+/* カードの配合表示：総量の注記 */
+.recipe-view .rtotal{color:var(--muted);font-size:11px;margin-top:4px;}
+.recipe-view li b{font-family:"Space Mono",monospace;color:var(--accent);}

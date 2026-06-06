@@ -32,6 +32,7 @@ let currentView = "all";       // all | owned | mix
 let collapsed = new Set();      // 折りたたみ中のメーカーグループ
 let selectedSeries = new Set(); // 選択中のシリーズ（複数可）。空=すべて
 let formKind = "product";       // フォームの種別
+let formEditId = "";            // 編集中の塗料ID（材料の自己参照を防ぐ）
 let html5qr = null;
 let scanMode = "search"; // "search"=既存検索/新規登録, "form"=編集中のバーコード欄に入れる
 
@@ -101,7 +102,9 @@ function bindEvents() {
   document.querySelector(".kindtoggle").addEventListener("click", e => {
     const b = e.target.closest(".kbtn"); if (!b) return; setKind(b.dataset.kind);
   });
-  $("recipe-add").addEventListener("click", () => { readRecipeFromDom(); recipeDraft.push({ name:"", parts:"", note:"" }); renderRecipeRows(); });
+  $("recipe-add").addEventListener("click", () => { readRecipeFromDom(); recipeDraft.push({ name:"", parts:"", note:"", refId:"" }); renderRecipeRows(); });
+  $("recipe-rows").addEventListener("input", updateRecipeCalc);
+  $("i-batchml").addEventListener("input", updateRecipeCalc);
   // スキャナ
   $("scan-close").addEventListener("click", () => { scanMode = "search"; stopScan(); });
   // エクスポート
@@ -310,11 +313,21 @@ function cardHtml(p) {
   const swatchColor = validHex ? p.hex : c.color;
   const cls = (!validHex && c.cls) ? " " + c.cls : "";
   const rem = clampRem(p.remaining);
-  const recipeHtml = (p.kind === "mix" && p.recipe && p.recipe.length)
-    ? `<div class="recipe-view"><div class="rtitle">🧪 配合</div><ul>${
-        p.recipe.map(r => `<li>${escapeHtml(r.name)}${r.parts ? `：${escapeHtml(r.parts)}` : ""}${r.note ? `（${escapeHtml(r.note)}）` : ""}</li>`).join("")
-      }</ul>${p.recipeNote ? `<div class="rnote">${escapeHtml(p.recipeNote)}</div>` : ""}</div>`
-    : "";
+  let recipeHtml = "";
+  if (p.kind === "mix" && p.recipe && p.recipe.length) {
+    const res = computeRecipe(p.recipe, p.batchMl);
+    const lis = p.recipe.map((r, idx) => {
+      const it = res.items[idx];
+      const mlStr = (res.canCalc && it && it.ml != null) ? ` <b>${fmtMl(it.ml)}ml</b>` : "";
+      // 参照先があれば現在名を表示（元塗料を改名しても追従する）
+      const linked = r.refId ? state.paints.find(x => x.id === r.refId) : null;
+      const dispName = linked ? (linked.nameJa || linked.name) : r.name;
+      return `<li>${escapeHtml(dispName)}${r.parts ? `：${escapeHtml(r.parts)}` : ""}${mlStr}${r.note ? `（${escapeHtml(r.note)}）` : ""}</li>`;
+    }).join("");
+    const totalLine = res.canCalc ? `<div class="rtotal">総量 ${fmtMl(res.batchMl)}ml で試算</div>` : "";
+    recipeHtml = `<div class="recipe-view"><div class="rtitle">🧪 配合</div><ul>${lis}</ul>${totalLine}${
+      p.recipeNote ? `<div class="rnote">${escapeHtml(p.recipeNote)}</div>` : ""}</div>`;
+  }
   return `<div class="card ${p.wanted ? "wanted" : ""}" data-id="${p.id}">
     <div class="swatch${cls}" style="background-color:${swatchColor}">${p.kind === "mix" ? '<span class="mixmark">🧪</span>' : ""}</div>
     <div class="info">
@@ -382,12 +395,95 @@ async function onListClick(e) {
 
 /* ============ 配合エディタ ============ */
 let recipeDraft = [];
+
+/* ============ 配合の計算ヘルパー（Lv2） ============ */
+// 比率の文字列から数値を取り出す。"10滴"→10、"2"→2、"少量"→NaN。
+function parsePartsNum(parts) {
+  const m = String(parts == null ? "" : parts).match(/\d+(?:\.\d+)?/);
+  if (!m) return NaN;
+  const n = parseFloat(m[0]);
+  return n > 0 ? n : NaN;
+}
+// ml表示の整形。20→"20"、13.33→"13.3"。
+const fmtMl = n => {
+  const v = Math.round(Number(n) * 10) / 10;
+  return Number.isInteger(v) ? String(v) : v.toFixed(1);
+};
+// 配合と総量から、各材料の必要量(ml)を計算する。
+// 必要量 = その材料の比率 ÷ 比率の合計 × 総量(batchMl)
+function computeRecipe(recipe, batchMl) {
+  const items = (recipe || []).map(r => ({ ...r, partsNum: parsePartsNum(r.parts) }));
+  const totalParts = items
+    .filter(it => Number.isFinite(it.partsNum))
+    .reduce((s, it) => s + it.partsNum, 0);
+  const ml = Number(batchMl);
+  const canCalc = Number.isFinite(ml) && ml > 0 && totalParts > 0;
+  items.forEach(it => {
+    it.ml = (canCalc && Number.isFinite(it.partsNum)) ? (it.partsNum / totalParts * ml) : null;
+  });
+  const hasNonNumeric = items.some(it => !Number.isFinite(it.partsNum) && (it.name || it.parts));
+  return { items, totalParts, batchMl: ml, canCalc, hasNonNumeric };
+}
+// 材料名から既存塗料のIDを解決する。表示名(nameJa) か name にちょうど1件一致したときだけ返す。
+function resolveRefId(name, excludeId) {
+  const key = (name || "").trim().toLowerCase();
+  if (!key) return "";
+  const hit = state.paints.filter(p =>
+    p.id !== excludeId &&
+    ((p.nameJa || "").trim().toLowerCase() === key || (p.name || "").trim().toLowerCase() === key));
+  return hit.length === 1 ? hit[0].id : "";
+}
+// 材料名の補完候補（datalist）を既存塗料から組み立てる。自分自身は除く。
+function buildMaterialList(excludeId) {
+  const dl = $("material-list");
+  if (!dl) return;
+  const seen = new Set();
+  const opts = [];
+  state.paints.forEach(p => {
+    if (p.id === excludeId) return;
+    const label = (p.nameJa || p.name || "").trim();
+    if (!label || seen.has(label)) return;
+    seen.add(label);
+    const desc = [p.maker, p.code].filter(Boolean).join(" ");
+    opts.push(`<option value="${escapeHtml(label)}">${escapeHtml(desc)}</option>`);
+  });
+  dl.innerHTML = opts.join("");
+}
+// 配合エディタ内の試算表示を更新する。DOMの現在値から計算する。
+function updateRecipeCalc() {
+  const box = $("recipe-calc");
+  if (!box) return;
+  if (formKind !== "mix") { box.innerHTML = ""; return; }
+  readRecipeFromDom();
+  const batchMl = Number($("i-batchml").value);
+  const named = recipeDraft.filter(r => r.name || r.parts);
+  if (named.length === 0) { box.innerHTML = ""; return; }
+  const res = computeRecipe(named, batchMl);
+  if (!res.canCalc) {
+    const msg = !(batchMl > 0)
+      ? "総量(ml)を入れると、各材料の必要量を計算します。"
+      : "比率に数値を入れると計算します（例：白2、青1）。";
+    box.innerHTML = `<div class="calc-hint">${msg}</div>`;
+    return;
+  }
+  const rows = res.items.map(it => it.ml == null
+    ? `<li class="calc-skip">${escapeHtml(it.name || "（無名）")}<span>比率が数値でないため除外</span></li>`
+    : `<li>${escapeHtml(it.name || "（無名）")}<b>${fmtMl(it.ml)} ml</b></li>`
+  ).join("");
+  const note = res.hasNonNumeric
+    ? `<div class="calc-hint">※「少量」など数値でない比率は試算から除いています。</div>`
+    : "";
+  box.innerHTML =
+    `<div class="calc-title">必要量の試算（総量 ${fmtMl(batchMl)} ml）</div>` +
+    `<ul class="calc-list">${rows}</ul>${note}`;
+}
+
 function renderRecipeRows() {
   const wrap = $("recipe-rows");
-  if (recipeDraft.length === 0) recipeDraft = [{ name: "", parts: "", note: "" }];
+  if (recipeDraft.length === 0) recipeDraft = [{ name: "", parts: "", note: "", refId: "" }];
   wrap.innerHTML = recipeDraft.map((r, i) => `
     <div class="recipe-row" data-i="${i}">
-      <input class="r-name" placeholder="材料の塗料名" value="${escapeHtml(r.name)}">
+      <input class="r-name" list="material-list" placeholder="材料の塗料名" value="${escapeHtml(r.name)}">
       <input class="r-parts" placeholder="比率" value="${escapeHtml(r.parts)}">
       <input class="r-note" placeholder="メモ" value="${escapeHtml(r.note)}">
       <button type="button" class="rdel" data-ri="${i}">✕</button>
@@ -396,15 +492,21 @@ function renderRecipeRows() {
     readRecipeFromDom();
     recipeDraft.splice(Number(b.dataset.ri), 1);
     renderRecipeRows();
+    updateRecipeCalc();
   }));
+  updateRecipeCalc();
 }
 function readRecipeFromDom() {
   const rows = $("recipe-rows").querySelectorAll(".recipe-row");
-  recipeDraft = [...rows].map(row => ({
-    name: row.querySelector(".r-name").value.trim(),
-    parts: row.querySelector(".r-parts").value.trim(),
-    note: row.querySelector(".r-note").value.trim(),
-  }));
+  recipeDraft = [...rows].map(row => {
+    const name = row.querySelector(".r-name").value.trim();
+    return {
+      name,
+      parts: row.querySelector(".r-parts").value.trim(),
+      note: row.querySelector(".r-note").value.trim(),
+      refId: resolveRefId(name, formEditId),
+    };
+  });
 }
 
 /* ============ 種別トグル ============ */
@@ -412,12 +514,15 @@ function setKind(kind) {
   formKind = kind;
   document.querySelectorAll(".kbtn").forEach(b => b.classList.toggle("active", b.dataset.kind === kind));
   $("recipe-block").hidden = (kind !== "mix");
+  updateRecipeCalc();
 }
 
 /* ============ フォーム ============ */
 function openForm(p) {
   $("form-title").textContent = p ? "塗料を編集" : "塗料を追加";
   $("edit-id").value = p ? p.id : "";
+  formEditId = p ? p.id : "";
+  buildMaterialList(formEditId);
   setKind(p ? (p.kind || "product") : "product");
   $("i-name").value = p ? p.name : "";
   $("i-nameja").value = p ? (p.nameJa || "") : "";
@@ -433,7 +538,10 @@ function openForm(p) {
   $("i-barcode").value = p ? (p.barcode || "") : "";
   $("i-note").value = p ? (p.note || "") : "";
   $("i-recipenote").value = p ? (p.recipeNote || "") : "";
-  recipeDraft = (p && p.recipe && p.recipe.length) ? p.recipe.map(r => ({ ...r })) : [{ name:"", parts:"", note:"" }];
+  $("i-batchml").value = (p && Number(p.batchMl) > 0) ? p.batchMl : "";
+  recipeDraft = (p && p.recipe && p.recipe.length)
+    ? p.recipe.map(r => ({ name: r.name || "", parts: r.parts || "", note: r.note || "", refId: r.refId || "" }))
+    : [{ name: "", parts: "", note: "", refId: "" }];
   renderRecipeRows();
   $("form-overlay").classList.add("show");
   $("i-name").focus();
@@ -477,6 +585,7 @@ async function saveForm() {
     note: $("i-note").value.trim(),
     recipe,
     recipeNote: formKind === "mix" ? $("i-recipenote").value.trim() : "",
+    batchMl: formKind === "mix" ? Math.max(0, Number($("i-batchml").value) || 0) : 0,
     updatedAt: now(),
   };
   const editId = $("edit-id").value;
@@ -641,7 +750,7 @@ async function importCsvText(text) {
       id: uid(), kind: "product",
       name: r.name, nameJa: r.nameJa, maker: r.maker, series: r.series, code: r.code,
       colorKey: r.colorKey, hex: r.hex || "", qty: 0, remaining: 100, wanted: false,
-      barcode: r.barcode, note: r.note, recipe: [], recipeNote: "",
+      barcode: r.barcode, note: r.note, recipe: [], recipeNote: "", batchMl: 0,
       createdAt: now(), updatedAt: now(),
     });
     existing.add(keyOf(r));
