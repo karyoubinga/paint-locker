@@ -31,6 +31,7 @@ let currentView = "all";       // all | owned | mix
 let collapsed = new Set();      // 折りたたみ中のメーカーグループ
 let formKind = "product";       // フォームの種別
 let html5qr = null;
+let scanMode = "search"; // "search"=既存検索/新規登録, "form"=編集中のバーコード欄に入れる
 
 /* ============ ショートカット ============ */
 const $ = id => document.getElementById(id);
@@ -85,13 +86,14 @@ function bindEvents() {
   $("pin-toggle").addEventListener("click", togglePinCurrent);
   // 追加・スキャン
   $("open-add").addEventListener("click", () => openForm(null));
-  $("open-scan").addEventListener("click", startScan);
+  $("open-scan").addEventListener("click", () => startScan("search"));
   // フォーム
   $("form-cancel").addEventListener("click", closeForm);
   $("form-overlay").addEventListener("click", e => { if (e.target === $("form-overlay")) closeForm(); });
   $("form-save").addEventListener("click", saveForm);
   $("i-remaining").addEventListener("input", e => { $("rem-val").textContent = e.target.value; });
   $("i-hex").addEventListener("input", () => setHexField($("i-hex").value));
+  $("form-scan").addEventListener("click", () => startScan("form"));
   $("hex-clear").addEventListener("click", () => {
     setHexField($("i-hex").dataset.set ? "" : $("i-hex").value);
   });
@@ -100,7 +102,7 @@ function bindEvents() {
   });
   $("recipe-add").addEventListener("click", () => { readRecipeFromDom(); recipeDraft.push({ name:"", parts:"", note:"" }); renderRecipeRows(); });
   // スキャナ
-  $("scan-close").addEventListener("click", stopScan);
+  $("scan-close").addEventListener("click", () => { scanMode = "search"; stopScan(); });
   // エクスポート
   $("export-btn").addEventListener("click", exportJson);
   // CSV取込
@@ -474,7 +476,8 @@ async function saveForm() {
 }
 
 /* ============ バーコード ============ */
-function startScan() {
+function startScan(mode) {
+  scanMode = (mode === "form") ? "form" : "search";
   $("scan-err").style.display = "none";
   $("scan-overlay").classList.add("show");
   if (typeof Html5Qrcode === "undefined") {
@@ -507,6 +510,15 @@ async function stopScan() {
 async function onScanSuccess(decodedText) {
   const code = decodedText.trim();
   await stopScan();
+
+  // 編集フォームのバーコード欄に入れるモード
+  if (scanMode === "form") {
+    $("i-barcode").value = code;
+    scanMode = "search";
+    return; // フォームはそのまま開いている
+  }
+
+  // 従来モード：既存検索 or 新規登録
   const found = state.paints.find(p => p.barcode && p.barcode === code);
   if (found) {
     flashCard(found.id);

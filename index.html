@@ -149,7 +149,10 @@
 
     <div class="field" id="barcode-field">
       <label class="fl">バーコード（任意・読取で自動入力）</label>
-      <input id="i-barcode" class="num" placeholder="JANコード">
+      <div class="barcoderow">
+        <input id="i-barcode" class="num" placeholder="JANコード">
+        <button type="button" class="btn btn-scan small" id="form-scan">📷 読取</button>
+      </div>
     </div>
 
     <!-- 配合エディタ（調色のときだけ表示） -->
