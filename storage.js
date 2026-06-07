@@ -7,6 +7,7 @@
  * 呼び出し側（app.js）は load / save の「形」しか知らないので、
  * 中身を変えても app.js は修正不要です。
  */
+/* exported PaintStore */
 const PaintStore = (() => {
   // 保存場所の名札。既存データ保護のため、アプリ名を変えてもこのKEYは変更しない。
   const KEY = "paint-manager-v2";

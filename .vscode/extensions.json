@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "ritwickdey.LiveServer",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "yzhang.markdown-all-in-one",
+    "streetsidesoftware.code-spell-checker",
+    "ms-ceintl.vscode-language-pack-ja",
+    "ms-python.python",
+    "github.copilot",
+    "github.copilot-chat"
+  ]
+}

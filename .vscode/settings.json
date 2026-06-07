@@ -1,0 +1,45 @@
+{
+  // ===== 保存時に Prettier で自動整形（このプロジェクトの Web 系ファイルのみ） =====
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // Markdown は行末 2 スペースで改行する書き方があるため、末尾空白は消さない
+    "files.trimTrailingWhitespace": false
+  },
+
+  // ===== ESLint：保存時に自動修正（flat config を自動検出） =====
+  "eslint.validate": ["javascript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // ===== 余分な空白・改行の整理 =====
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // ===== スペルチェッカー：このアプリ固有の語を「正しい」と登録（誤検出を防ぐ） =====
+  "cSpell.words": [
+    "Vallejo",
+    "Gaahleri",
+    "Gunpla",
+    "batchml",
+    "refid",
+    "recipenote",
+    "pinnedmakers",
+    "supabase",
+    "anonkey",
+    "datalist",
+    "qrcode",
+    "nameja",
+    "colorkey",
+    "topcoat",
+    "swatch",
+    "kanban"
+  ]
+}

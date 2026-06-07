@@ -15,6 +15,7 @@
  *   2. window.SUPABASE_CONFIG = { url, anonKey } を設定
  *   3. paint_state テーブルとRLSをSQLで作成
  */
+/* exported PaintStore */
 const PaintStore = (() => {
   const cfg = window.SUPABASE_CONFIG || {};
   if (!window.supabase || !cfg.url || !cfg.anonKey) {

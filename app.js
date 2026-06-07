@@ -631,7 +631,7 @@ function startScan(mode) {
 function showScanErr(msg) { const el = $("scan-err"); el.innerHTML = msg; el.style.display = "block"; }
 
 async function stopScan() {
-  if (html5qr) { try { await html5qr.stop(); html5qr.clear(); } catch (e) {} html5qr = null; }
+  if (html5qr) { try { await html5qr.stop(); html5qr.clear(); } catch { /* 既に停止済みなどのエラーは無視 */ } html5qr = null; }
   $("scan-overlay").classList.remove("show");
 }
 
