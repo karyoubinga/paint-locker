@@ -6,27 +6,44 @@
 
 /* ============ 定数 ============ */
 const COLOR_TYPES = [
-  { key: "red",    label: "赤系",         color: "#d63a3a" },
-  { key: "orange", label: "橙系",         color: "#e8822e" },
-  { key: "yellow", label: "黄系",         color: "#e8c63a" },
-  { key: "green",  label: "緑系",         color: "#3fae57" },
-  { key: "blue",   label: "青系",         color: "#3f7fd6" },
-  { key: "purple", label: "紫系",         color: "#8b5cd6" },
-  { key: "pink",   label: "桃系",         color: "#e87fb0" },
-  { key: "brown",  label: "茶系",         color: "#8a5a34" },
-  { key: "white",  label: "白系",         color: "#f0f0f0" },
-  { key: "gray",   label: "グレー系",      color: "#8b93a3" },
-  { key: "black",  label: "黒系",         color: "#23262d" },
-  { key: "metal",  label: "メタリック",    color: "#c0c4cc", cls: "metal" },
-  { key: "clear",  label: "クリア（透明）", color: "#9fd8cf", cls: "clear" },
-  { key: "primer", label: "サフ",         color: "#9a9a9a" },
-  { key: "topcoat",label: "トップコート",  color: "#cfd8e0", cls: "clear" },
-  { key: "thinner", label: "溶剤・うすめ液",     color: "#7fd3e0", cls: "clear" },
-  { key: "cleaner", label: "洗浄液",            color: "#b59ad6", cls: "clear" },
-  { key: "medium",  label: "添加剤・メディウム", color: "#cdbf9a" },
+  { key: "red",    label: "赤系",         color: "#d63a3a", group: "色" },
+  { key: "orange", label: "橙系",         color: "#e8822e", group: "色" },
+  { key: "yellow", label: "黄系",         color: "#e8c63a", group: "色" },
+  { key: "green",  label: "緑系",         color: "#3fae57", group: "色" },
+  { key: "blue",   label: "青系",         color: "#3f7fd6", group: "色" },
+  { key: "purple", label: "紫系",         color: "#8b5cd6", group: "色" },
+  { key: "pink",   label: "桃系",         color: "#e87fb0", group: "色" },
+  { key: "brown",  label: "茶系",         color: "#8a5a34", group: "色" },
+  { key: "white",  label: "白系",         color: "#f0f0f0", group: "色" },
+  { key: "gray",   label: "グレー系",      color: "#8b93a3", group: "色" },
+  { key: "black",  label: "黒系",         color: "#23262d", group: "色" },
+  { key: "metal",  label: "メタリック",    color: "#c0c4cc", cls: "metal", group: "色" },
+  { key: "clear",  label: "クリア（透明）", color: "#9fd8cf", cls: "clear", group: "色" },
+  { key: "primer", label: "サフ",         color: "#9a9a9a", group: "用途・副資材" },
+  { key: "topcoat",label: "トップコート",  color: "#cfd8e0", cls: "clear", group: "用途・副資材" },
+  { key: "thinner", label: "溶剤・うすめ液",     color: "#7fd3e0", cls: "clear", group: "用途・副資材" },
+  { key: "cleaner", label: "洗浄液",            color: "#b59ad6", cls: "clear", group: "用途・副資材" },
+  { key: "medium",  label: "添加剤・メディウム", color: "#cdbf9a", group: "用途・副資材" },
   { key: "other",  label: "その他",       color: "#5dd5c4" },
 ];
 const colorMap = Object.fromEntries(COLOR_TYPES.map(c => [c.key, c]));
+
+// 色系統セレクト用のHTML。group があれば <optgroup> で見出し分けする。
+// 出現順を保ったまま、同じ group をまとめる（未設定の「その他」は見出し無しで末尾）。
+function colorOptionsHtml() {
+  const order = [];
+  const byGroup = new Map();
+  COLOR_TYPES.forEach(c => {
+    const g = c.group || "";
+    if (!byGroup.has(g)) { byGroup.set(g, []); order.push(g); }
+    byGroup.get(g).push(`<option value="${c.key}">${c.label}</option>`);
+  });
+  return order.map(g => {
+    const opts = byGroup.get(g).join("");
+    return g ? `<optgroup label="${g}">${opts}</optgroup>` : opts;
+  }).join("");
+}
+
 const NONE = "__NONE__"; // シリーズ「指定なし」を表すトークン
 
 /* ============ 状態 ============ */
@@ -60,11 +77,10 @@ async function reloadFromStore() {
 }
 
 (async function init() {
-  // 色系統セレクトを埋める
-  COLOR_TYPES.forEach(c => {
-    $("f-color").insertAdjacentHTML("beforeend", `<option value="${c.key}">${c.label}</option>`);
-    $("i-color").insertAdjacentHTML("beforeend", `<option value="${c.key}">${c.label}</option>`);
-  });
+  // 色系統セレクトを埋める（グループ見出し付き）
+  const colorOpts = colorOptionsHtml();
+  $("f-color").insertAdjacentHTML("beforeend", colorOpts);
+  $("i-color").insertAdjacentHTML("beforeend", colorOpts);
   bindEvents();
   // Supabase版のみ：ログイン状態が変わったら読み直す（localStorage版には無いので無害）
   if (typeof PaintStore.onAuthChange === "function") {
