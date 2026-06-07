@@ -21,6 +21,9 @@ const COLOR_TYPES = [
   { key: "clear",  label: "クリア（透明）", color: "#9fd8cf", cls: "clear" },
   { key: "primer", label: "サフ",         color: "#9a9a9a" },
   { key: "topcoat",label: "トップコート",  color: "#cfd8e0", cls: "clear" },
+  { key: "thinner", label: "溶剤・うすめ液",     color: "#7fd3e0", cls: "clear" },
+  { key: "cleaner", label: "洗浄液",            color: "#b59ad6", cls: "clear" },
+  { key: "medium",  label: "添加剤・メディウム", color: "#cdbf9a" },
   { key: "other",  label: "その他",       color: "#5dd5c4" },
 ];
 const colorMap = Object.fromEntries(COLOR_TYPES.map(c => [c.key, c]));
